@@ -20,10 +20,38 @@ export interface Account {
 }
 
 export interface User {
-  id: string
-  username: string
+    id: string
+    username: string
 }
 
 export type AuthResponse = {
     accessToken: string;
 }
+
+export type Page<T> = {
+    content: T[];
+    pageable: {
+        pageNumber: number;
+        pageSize: number;
+        offset: number;
+        paged: boolean;
+        unpaged: boolean;
+        sort: {
+            sorted: boolean;
+            unsorted: boolean;
+            empty: boolean;
+        };
+    };
+    totalPages: number;
+    totalElements: number;
+    last: boolean;
+    first: boolean;
+    number: number;
+    numberOfElements: number;
+    empty: boolean;
+    sort: {
+        sorted: boolean;
+        unsorted: boolean;
+        empty: boolean;
+    };
+};

@@ -1,29 +1,31 @@
 import { api } from "@/lib/api-client"
-import { Expense } from "@/types/api";
-import { useQuery } from "@tanstack/react-query";
+import { Expense, Page } from "@/types/api"
+import { useInfiniteQuery } from "@tanstack/react-query"
 
-export const getRecentExpenses = ({
-    accountIds
+export const getExpenses = ({
+    page = 0
 }: {
-    accountIds: string[]
-}) => {
-    return api.get<Expense[]>(
-        "/expenses/recent",
+    page?: number
+}): Promise<Page<Expense>> => {
+    return api.get(
+        "/expenses",
         {
             params: {
-                accountIds: accountIds
+                page: page,
+                size: 10
             }
         }
-    );
+    )
 }
 
-export const useGetRecentExpenses = ({
-    accountIds
-}: {
-    accountIds: string[]
-}) => {
-    return useQuery<Expense[]>({
-        queryKey: ["expenses", accountIds],
-        queryFn: () => getRecentExpenses({ accountIds })
-    })
-}
+export const useGetExpenses = () => {
+    return useInfiniteQuery<Page<Expense>, Error>({
+        queryKey: ["expenses"],
+        queryFn: ({ pageParam = 1 }) => {
+            return getExpenses({ page: pageParam as number });
+        },
+        getNextPageParam: (lastPage) =>
+            lastPage.last ? undefined : lastPage.number + 1,
+        initialPageParam: 0
+    });
+};

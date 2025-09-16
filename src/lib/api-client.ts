@@ -61,6 +61,7 @@ function buildUrlWithParams(
     });
 
     const qs = searchParams.toString();
+    console.log(`${url}?${qs}`)
     return qs ? `${url}?${qs}` : url;
 }
 

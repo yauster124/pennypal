@@ -1,30 +1,27 @@
 import { cn } from "@/lib/utils";
-import { Account } from "@/types/api"
-import { useState } from "react";
+import { Account } from "@/types/api";
+import { useAccountStore } from "../store/account-store";
 
 export const AccountCard = ({
-    account,
-    onToggle
+    account
 }: {
-    account: Account,
-    onToggle?: (id: string | number, active: boolean) => void
+    account: Account
 }) => {
-    const [active, setActive] = useState(false);
+    const toggle = useAccountStore((s) => s.toggle);
+    const isSelected = useAccountStore((s) => s.isSelected);
+    const selectedIds = useAccountStore((s) => s.selectedIds);
 
-    const handleClick = () => {
-        const newActive = !active;
-        setActive(newActive);
-        onToggle?.(account.id, newActive);
-    };
+    const active = isSelected(account.id);
 
     return (
         <button
-            onClick={handleClick}
+            onClick={() => {
+                toggle(account.id);
+            }}
             className={cn(
-                "w-full text-left px-4 py-2 rounded-xl border transition",
-                active ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+                "w-full text-left px-4 py-2 rounded-xl transition",
+                active ? "bg-primary border border-primary text-primary-foreground" : "border hover:bg-muted"
             )}
-
         >
             <div className="flex flex-col items-start">
                 <span
@@ -32,7 +29,6 @@ export const AccountCard = ({
                         "text-primary-foreground/80": active,
                         "text-muted-foreground": !active,
                     })}
-
                 >
                     {account.name}
                 </span>

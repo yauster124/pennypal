@@ -5,9 +5,18 @@ import { useGetAccounts } from "../api/get-accounts";
 import { AccountCard } from "./account-card";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
+import { useAccountStore } from "../store/account-store";
+import { useEffect } from "react";
+import { CreateAccount } from "./create-account";
 
 export const AccountListSection = () => {
     const getAccounts = useGetAccounts();
+    const initialize = useAccountStore((s) => s.initialize);
+    useEffect(() => {
+        if (getAccounts.isSuccess) {
+            initialize((getAccounts.data || []).map((a) => a.id));
+        }
+    }, [getAccounts.isSuccess]);
 
     return (
         <Card className="w-full">
@@ -18,18 +27,22 @@ export const AccountListSection = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 w-full h-full mb-2">
                     {getAccounts.data?.map((account) => {
                         return (
-                            <AccountCard account={account} />
+                            <AccountCard key={account.id} account={account} />
                         )
                     })}
                 </div>
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="w-full"
-                >
-                    <PlusIcon />
-                    <span className="font-normal text-muted-foreground">Add another account</span>
-                </Button>
+                <CreateAccount
+                    trigger={
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="w-full"
+                        >
+                            <PlusIcon />
+                            <span className="font-normal text-muted-foreground">Add another account</span>
+                        </Button>
+                    }
+                />
             </CardContent>
         </Card>
     );
