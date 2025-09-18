@@ -7,6 +7,11 @@ import { useAccountStore } from "@/features/accounts/store/account-store";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { format, subMonths, subYears } from "date-fns";
+import { useGetAccountValues } from "@/features/accounts/api/get-account-values";
+import { chartColours } from "@/lib/generate-chart-config";
+import { AccountValuesChart } from "./account-value-chart/account-values-chart";
+import { ChartConfig } from "@/components/ui/chart";
+import { toChartData } from "./account-value-chart/account-value-utils";
 
 export const ExpenseTotalSection = () => {
     const selectedIds = useAccountStore((s) => s.selectedIds);
@@ -22,7 +27,20 @@ export const ExpenseTotalSection = () => {
         accountIds: selectedIds,
         startDate: startDateStr,
         endDate: endDateStr,
-    })
+    });
+
+    const getAccountValues = useGetAccountValues({ startDate: startDateStr });
+    const chartData = toChartData(getAccountValues.data || {}, dateRange.startDate, dateRange.endDate);
+    const chartConfig: ChartConfig = Object.keys(getAccountValues.data || {}).reduce(
+        (acc, key, idx) => {
+            acc[key] = {
+                label: key,
+                color: chartColours[idx % chartColours.length],
+            }
+            return acc
+        },
+        {} as ChartConfig
+    )
 
     const tabs = [
         { value: "1m", label: "1M" },
@@ -64,10 +82,13 @@ export const ExpenseTotalSection = () => {
                     </TabsList>
                     {tabs.map((tab) => (
                         <TabsContent key={tab.value} value={tab.value}>
-                            <div className="flex justify-center">
+                            <div className="flex flex-col justify-center">
                                 {getTotalQuery.isSuccess && getTotalQuery.data && (
-                                    <AnimatedNumber target={Number(getTotalQuery.data.total)} />
+                                    <div className="flex justify-center">
+                                        <AnimatedNumber target={Number(getTotalQuery.data.total)} />
+                                    </div>
                                 )}
+                                <AccountValuesChart chartConfig={chartConfig} chartData={chartData} />
                             </div>
                         </TabsContent>
                     ))}

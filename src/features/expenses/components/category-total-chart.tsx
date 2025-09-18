@@ -1,6 +1,5 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Cell, Label, Pie, PieChart } from "recharts";
-import { CategoryExpenseSummary } from "@/features/expenses/api/get-category-totals"
 
 type ChartData = {
     category: string;

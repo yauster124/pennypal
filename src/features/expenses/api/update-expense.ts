@@ -35,6 +35,12 @@ export const useUpdateExpense = () => {
             queryClient.refetchQueries({
                 queryKey: ["category-totals"]
             });
+            queryClient.refetchQueries({
+                queryKey: ["total"]
+            });
+            queryClient.refetchQueries({
+                queryKey: ["accounts"]
+            });
             useUIStore.getState().close(`update-expense-${variables.expenseId}`);
         }
     })

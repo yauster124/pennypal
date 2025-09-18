@@ -19,6 +19,11 @@ export interface Account {
     balance: string
 }
 
+export interface AccountValuePoint {
+    date: Date;
+    value: string;
+}
+
 export interface User {
     id: string
     username: string

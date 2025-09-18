@@ -12,11 +12,11 @@ type RequestOptions = {
     authRequired?: boolean;
 };
 
-async function refreshToken(): Promise<string | null> {
+export async function refreshToken(): Promise<string | null> {
     try {
-        const res = await fetch(`${env.API_URL}/api/auth/refresh`, {
+        const res = await fetch(`${env.API_URL}/auth/refresh`, {
             method: "POST",
-            credentials: "include", // send refresh cookie
+            credentials: "include"
         });
 
         if (res.status === 401) {
@@ -61,7 +61,6 @@ function buildUrlWithParams(
     });
 
     const qs = searchParams.toString();
-    console.log(`${url}?${qs}`)
     return qs ? `${url}?${qs}` : url;
 }
 

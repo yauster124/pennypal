@@ -19,3 +19,12 @@ export const groupByMonth = (expenses: Expense[]) => {
     return groups;
   }, {} as Record<string, Expense[]>);
 };
+
+export const toUTCDateAtMidnight = (date: Date): Date => {
+  const year = date.getFullYear();
+  const month = date.getMonth(); // 0-indexed
+  const day = date.getDate();
+
+  // Construct a UTC date at midnight
+  return new Date(Date.UTC(year, month, day, 0, 0, 0, 0));
+}

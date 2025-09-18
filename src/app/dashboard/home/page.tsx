@@ -5,11 +5,11 @@ import { RecentExpensesSection } from "@/features/expenses/components/recent-exp
 
 const HomePage = () => {
     return (
-        <div className="flex flex-col gap-4 max-w-xl mx-auto">
+        <div className="flex flex-col gap-4 max-w-3xl mx-auto">
             <AccountListSection />
-            <ExpenseTotalSection />
-            <CategoryTotalsSection />
             <RecentExpensesSection />
+            <CategoryTotalsSection />
+            <ExpenseTotalSection />
         </div>
     )
 }

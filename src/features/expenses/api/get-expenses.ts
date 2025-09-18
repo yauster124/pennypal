@@ -12,7 +12,7 @@ export const getExpenses = ({
         {
             params: {
                 page: page,
-                size: 10
+                size: 15
             }
         }
     )

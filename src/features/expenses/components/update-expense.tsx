@@ -15,6 +15,7 @@ import { Combobox } from "@/components/ui/combobox";
 import { useGetAccounts } from "@/features/accounts/api/get-accounts";
 import { Expense } from "@/types/api";
 import { UpdateExpenseInput, updateExpenseInputSchema, useUpdateExpense } from "../api/update-expense";
+import { useEffect } from "react";
 
 export const UpdateExpense = ({
     trigger,
@@ -45,6 +46,18 @@ export const UpdateExpense = ({
             accountId: expense.account.id
         }
     });
+
+    useEffect(() => {
+        if (expense) {
+            form.reset({
+                name: expense.name,
+                amount: Math.abs(Number(expense.amount)),
+                date: new Date(expense.date),
+                categoryId: expense.category.id,
+                accountId: expense.account.id
+            })
+        }
+    }, [expense, form])
 
     return (
         <Dialog open={isOpen} onOpenChange={(openValue) => openValue ? open(`update-expense-${expense.id}`) : close(`update-expense-${expense.id}`)}>
@@ -99,7 +112,7 @@ export const UpdateExpense = ({
                             name="date"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Do by date</FormLabel>
+                                    <FormLabel>Date</FormLabel>
                                     <FormControl>
                                         <DatePicker {...field} />
                                     </FormControl>
@@ -111,7 +124,7 @@ export const UpdateExpense = ({
                             name="categoryId"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Do by date</FormLabel>
+                                    <FormLabel>Category</FormLabel>
                                     <FormControl>
                                         <CategoryCombobox categories={getCategories.data} {...field} placeholder="Select a category" />
                                     </FormControl>
@@ -123,7 +136,7 @@ export const UpdateExpense = ({
                             name="accountId"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Do by date</FormLabel>
+                                    <FormLabel>Account</FormLabel>
                                     <FormControl>
                                         <Combobox data={accounts || []} {...field} placeholder="Select an account" />
                                     </FormControl>

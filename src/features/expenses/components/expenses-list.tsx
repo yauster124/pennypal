@@ -59,11 +59,16 @@ export const ExpensesList = () => {
                     <h3 className="text-sm text-muted-foreground font-semibold mb-2">{month}</h3>
                     <div className="flex flex-col rounded-lg bg-card">
                         {expenses.map(exp => (
-                            <ExpenseRecord key={exp.id} expense={exp} />
-                        ))}
+                            <ExpenseRecord
+                                key={exp.id}
+                                expense={exp}
+                            />
+                        )
+                        )}
                     </div>
                 </div>
             ))}
+            <div ref={lastExpenseRef} />
             {expensesQuery.isFetchingNextPage && (
                 <div className="flex w-full justify-center py-4">
                     <Spinner size="sm" />

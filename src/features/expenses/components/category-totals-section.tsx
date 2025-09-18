@@ -8,33 +8,20 @@ import { useAccountStore } from "@/features/accounts/store/account-store";
 import { CategoryTotalChart } from "./category-total-chart";
 import { useState } from "react";
 import { format, subMonths, subYears } from "date-fns";
+import { buildChartConfig } from "@/lib/generate-chart-config";
 
 export const CategoryTotalsSection = () => {
     const today = new Date()
     const [startDate, setStartDate] = useState(subMonths(today, 1));
     const startDateStr = format(startDate, "yyyy-MM-dd")
-    const chartColors = [
-        "var(--chart-1)",
-        "var(--chart-2)",
-        "var(--chart-3)",
-        "var(--chart-4)",
-        "var(--chart-5)",
-        "var(--chart-6)",
-        "var(--chart-7)",
-        "var(--chart-8)",
-    ]
     const selectedIds = useAccountStore((s) => s.selectedIds);
     const getCategoryTotals = useGetCategoryTotals({ accountIds: selectedIds, startDate: startDateStr });
 
-    const chartConfig: ChartConfig = getCategoryTotals.data
-        ? getCategoryTotals.data.reduce((acc, entry, idx) => {
-            acc[String(entry.categoryId)] = {
-                label: entry.categoryName,
-                color: chartColors[idx % chartColors.length],
-            }
-            return acc
-        }, {} as ChartConfig)
-        : {}
+    const chartConfig: ChartConfig = buildChartConfig(
+        getCategoryTotals.data,
+        (entry) => entry.categoryId,
+        (entry) => entry.categoryName
+    );
 
     const chartData = getCategoryTotals.data?.map((entry) => {
         return {

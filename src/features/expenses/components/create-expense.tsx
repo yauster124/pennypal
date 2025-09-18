@@ -14,6 +14,7 @@ import { useGetCategories } from "@/features/categories/api/get-categories";
 import { CategoryCombobox } from "@/features/categories/components/category-combobox";
 import { Combobox } from "@/components/ui/combobox";
 import { useGetAccounts } from "@/features/accounts/api/get-accounts";
+import { CurrencyInput } from "@/components/ui/currency-input";
 
 export const CreateExpense = ({
     trigger
@@ -36,7 +37,7 @@ export const CreateExpense = ({
         resolver: zodResolver(createExpenseInputSchema) as Resolver<CreateExpenseInput>,
         defaultValues: {
             name: "",
-            amount: 0,
+            amount: undefined,
             date: new Date(),
             categoryId: null,
             accountId: ""
@@ -44,7 +45,13 @@ export const CreateExpense = ({
     });
 
     return (
-        <Dialog open={isOpen} onOpenChange={(openValue) => openValue ? open("create-expense") : close("create-expense")}>
+        <Dialog
+            open={isOpen}
+            onOpenChange={(openValue) => {
+                openValue ? open("create-expense") : close("create-expense");
+                form.reset();
+            }}
+        >
             <DialogTrigger asChild>
                 {trigger}
             </DialogTrigger>
@@ -84,7 +91,8 @@ export const CreateExpense = ({
                                 <FormItem>
                                     <FormLabel>Amount</FormLabel>
                                     <FormControl>
-                                        <Input type="number" {...field} />
+                                        {/* <Input type="number" {...field} /> */}
+                                        <CurrencyInput {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -95,7 +103,7 @@ export const CreateExpense = ({
                             name="date"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Do by date</FormLabel>
+                                    <FormLabel>Date</FormLabel>
                                     <FormControl>
                                         <DatePicker {...field} />
                                     </FormControl>
@@ -107,7 +115,7 @@ export const CreateExpense = ({
                             name="categoryId"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Do by date</FormLabel>
+                                    <FormLabel>Category</FormLabel>
                                     <FormControl>
                                         <CategoryCombobox categories={getCategories.data} {...field} placeholder="Select a category" />
                                     </FormControl>
@@ -119,7 +127,7 @@ export const CreateExpense = ({
                             name="accountId"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Do by date</FormLabel>
+                                    <FormLabel>Account</FormLabel>
                                     <FormControl>
                                         <Combobox data={accounts || []} {...field} placeholder="Select an account" />
                                     </FormControl>
