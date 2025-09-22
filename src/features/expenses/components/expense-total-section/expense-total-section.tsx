@@ -69,33 +69,35 @@ export const ExpenseTotalSection = () => {
                 <CardTitle>Total growth</CardTitle>
             </CardHeader>
             <CardContent>
-                {getTotalQuery.isPending || getAccountValues.isPending ? (
-                    <div className="flex justify-center">
-                        <Loader2Icon className="animate-spin" />
-                    </div>
-                ) : (
-                    <Tabs defaultValue="1m" onValueChange={handleTabChange}>
-                        <TabsList>
-                            {tabs.map((tab) => (
-                                <TabsTrigger key={tab.value} value={tab.value}>
-                                    {tab.label}
-                                </TabsTrigger>
-                            ))}
-                        </TabsList>
+                <Tabs defaultValue="1m" onValueChange={handleTabChange}>
+                    <TabsList>
                         {tabs.map((tab) => (
-                            <TabsContent key={tab.value} value={tab.value}>
+                            <TabsTrigger key={tab.value} value={tab.value}>
+                                {tab.label}
+                            </TabsTrigger>
+                        ))}
+                    </TabsList>
+                    {tabs.map((tab) => (
+                        <TabsContent key={tab.value} value={tab.value}>
+                            {getTotalQuery.isPending ? (
+                                <div className="flex justify-center">
+                                    <Loader2Icon className="animate-spin" />
+                                </div>
+                            ) : getTotalQuery.isSuccess && getTotalQuery.data ? (
                                 <div className="flex flex-col justify-center">
-                                    {getTotalQuery.isSuccess && getTotalQuery.data && (
-                                        <div className="flex justify-center">
-                                            <AnimatedNumber target={Number(getTotalQuery.data.total)} />
-                                        </div>
-                                    )}
+                                    <div className="flex justify-center">
+                                        <AnimatedNumber target={Number(getTotalQuery.data.total)} />
+                                    </div>
                                     <AccountValuesChart chartConfig={chartConfig} chartData={chartData} />
                                 </div>
-                            </TabsContent>
-                        ))}
-                    </Tabs>
-                )}
+                            ) : (
+                                <div className="flex justify-center">
+                                    <span className="text-sm text-muted-foreground">Nothing to show</span>
+                                </div>
+                            )}
+                        </TabsContent>
+                    ))}
+                </Tabs>
             </CardContent>
         </Card>
     )

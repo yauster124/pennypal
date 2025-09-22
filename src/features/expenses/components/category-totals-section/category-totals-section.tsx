@@ -12,6 +12,7 @@ import { buildChartConfig } from "@/lib/generate-chart-config";
 import { Loader2Icon } from "lucide-react";
 
 export const CategoryTotalsSection = () => {
+    const [selectedTab, setSelectedTab] = useState("1m")
     const today = new Date()
     const [startDate, setStartDate] = useState(subMonths(today, 1));
     const startDateStr = format(startDate, "yyyy-MM-dd")
@@ -40,6 +41,7 @@ export const CategoryTotalsSection = () => {
     ];
 
     const handleTabChange = (value: string) => {
+        setSelectedTab(value);
         switch (value) {
             case "1m":
                 setStartDate(subMonths(today, 1))
@@ -62,38 +64,35 @@ export const CategoryTotalsSection = () => {
                 <CardTitle>Expenses structure</CardTitle>
             </CardHeader>
             <CardContent>
-                {getCategoryTotals.isPending ? (
-                    <div className="flex justify-center">
-                        <Loader2Icon className="animate-spin" />
-                    </div>
-                ) : (
-                    <Tabs defaultValue="1m" onValueChange={handleTabChange}>
-                        <TabsList>
-                            {tabs.map((tab) => (
-                                <TabsTrigger key={tab.value} value={tab.value}>
-                                    {tab.label}
-                                </TabsTrigger>
-                            ))}
-                        </TabsList>
-
+                <Tabs value={selectedTab} onValueChange={handleTabChange}>
+                    <TabsList>
                         {tabs.map((tab) => (
-                            <TabsContent key={tab.value} value={tab.value}>
-                                {chartData && chartData.length > 0 ? (
-                                    <CategoryTotalChart
-                                        chartConfig={chartConfig}
-                                        chartData={chartData}
-                                        expenseTotal={expenseTotal || 0}
-                                    />
-                                ) : (
-                                    <div className="flex justify-center">
-                                        <span className="text-sm text-muted-foreground">Nothing to show</span>
-                                    </div>
-                                )}
-                            </TabsContent>
+                            <TabsTrigger key={tab.value} value={tab.value}>
+                                {tab.label}
+                            </TabsTrigger>
                         ))}
-                    </Tabs>
-                )
-                }
+                    </TabsList>
+
+                    {tabs.map((tab) => (
+                        <TabsContent key={tab.value} value={tab.value} className="min-h-[300px]">
+                            {getCategoryTotals.isPending ? (
+                                <div className="flex justify-center">
+                                    <Loader2Icon className="animate-spin" />
+                                </div>
+                            ) : getCategoryTotals.isSuccess && chartData && chartData.length > 0 ? (
+                                <CategoryTotalChart
+                                    chartConfig={chartConfig}
+                                    chartData={chartData}
+                                    expenseTotal={expenseTotal || 0}
+                                />
+                            ) : (
+                                <div className="flex justify-center">
+                                    <span className="text-sm text-muted-foreground">Nothing to show</span>
+                                </div>
+                            )}
+                        </TabsContent>
+                    ))}
+                </Tabs>
             </CardContent >
         </Card >
     )

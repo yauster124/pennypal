@@ -6,6 +6,7 @@ import { ExpenseRecord } from "./expense-record";
 import { useCallback, useRef } from "react";
 import { groupByMonth } from "@/lib/utils";
 import { useSearchFiltersStore } from "../store/search-filters-store";
+import { format } from "date-fns";
 
 export const ExpensesList = () => {
     const searchQuery = useSearchFiltersStore((s) => s.searchQuery);
@@ -15,8 +16,8 @@ export const ExpensesList = () => {
 
     const expensesQuery = useGetExpenses({
         searchQuery: searchQuery,
-        startDateQuery: startDateQuery,
-        endDateQuery: endDateQuery,
+        startDateQuery: startDateQuery ? format(startDateQuery, "yyyy-MM-dd") : undefined,
+        endDateQuery: endDateQuery ? format(endDateQuery, "yyyy-MM-dd") : undefined,
         categoryIdsQuery: categoryIdsQuery
     });
 
