@@ -3,12 +3,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartConfig } from "@/components/ui/chart";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useGetCategoryTotals } from "../api/get-category-totals";
+import { useGetCategoryTotals } from "../../api/get-category-totals";
 import { useAccountStore } from "@/features/accounts/store/account-store";
-import { CategoryTotalChart } from "./category-total-chart";
+import { CategoryTotalChart } from "./category-totals-chart";
 import { useState } from "react";
 import { format, subMonths, subYears } from "date-fns";
 import { buildChartConfig } from "@/lib/generate-chart-config";
+import { Loader2Icon } from "lucide-react";
 
 export const CategoryTotalsSection = () => {
     const today = new Date()
@@ -61,32 +62,39 @@ export const CategoryTotalsSection = () => {
                 <CardTitle>Expenses structure</CardTitle>
             </CardHeader>
             <CardContent>
-                <Tabs defaultValue="1m" onValueChange={handleTabChange}>
-                    <TabsList>
-                        {tabs.map((tab) => (
-                            <TabsTrigger key={tab.value} value={tab.value}>
-                                {tab.label}
-                            </TabsTrigger>
-                        ))}
-                    </TabsList>
+                {getCategoryTotals.isPending ? (
+                    <div className="flex justify-center">
+                        <Loader2Icon className="animate-spin" />
+                    </div>
+                ) : (
+                    <Tabs defaultValue="1m" onValueChange={handleTabChange}>
+                        <TabsList>
+                            {tabs.map((tab) => (
+                                <TabsTrigger key={tab.value} value={tab.value}>
+                                    {tab.label}
+                                </TabsTrigger>
+                            ))}
+                        </TabsList>
 
-                    {tabs.map((tab) => (
-                        <TabsContent key={tab.value} value={tab.value}>
-                            {chartData && chartData.length > 0 ? (
-                                <CategoryTotalChart
-                                    chartConfig={chartConfig}
-                                    chartData={chartData}
-                                    expenseTotal={expenseTotal || 0}
-                                />
-                            ) : (
-                                <div className="flex justify-center">
-                                    <span className="text-sm text-muted-foreground">Nothing to show</span>
-                                </div>
-                            )}
-                        </TabsContent>
-                    ))}
-                </Tabs>
-            </CardContent>
-        </Card>
+                        {tabs.map((tab) => (
+                            <TabsContent key={tab.value} value={tab.value}>
+                                {chartData && chartData.length > 0 ? (
+                                    <CategoryTotalChart
+                                        chartConfig={chartConfig}
+                                        chartData={chartData}
+                                        expenseTotal={expenseTotal || 0}
+                                    />
+                                ) : (
+                                    <div className="flex justify-center">
+                                        <span className="text-sm text-muted-foreground">Nothing to show</span>
+                                    </div>
+                                )}
+                            </TabsContent>
+                        ))}
+                    </Tabs>
+                )
+                }
+            </CardContent >
+        </Card >
     )
 }

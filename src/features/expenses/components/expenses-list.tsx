@@ -1,14 +1,24 @@
 "use client"
 
-import { Spinner } from "@/components/ui/spinner";
 import { useGetExpenses } from "../api/get-expenses";
-import { ArchiveX } from "lucide-react";
+import { ArchiveX, Loader2Icon } from "lucide-react";
 import { ExpenseRecord } from "./expense-record";
 import { useCallback, useRef } from "react";
 import { groupByMonth } from "@/lib/utils";
+import { useSearchFiltersStore } from "../store/search-filters-store";
 
 export const ExpensesList = () => {
-    const expensesQuery = useGetExpenses();
+    const searchQuery = useSearchFiltersStore((s) => s.searchQuery);
+    const startDateQuery = useSearchFiltersStore((s) => s.startDate);
+    const endDateQuery = useSearchFiltersStore((s) => s.endDate);
+    const categoryIdsQuery = useSearchFiltersStore((s) => s.categoryIds);
+
+    const expensesQuery = useGetExpenses({
+        searchQuery: searchQuery,
+        startDateQuery: startDateQuery,
+        endDateQuery: endDateQuery,
+        categoryIdsQuery: categoryIdsQuery
+    });
 
     const expenses = expensesQuery.data?.pages.flatMap((page) => page.content);
     const groupedExpenses = groupByMonth(expenses || []);
@@ -33,8 +43,8 @@ export const ExpensesList = () => {
 
     if (expensesQuery.isLoading) {
         return (
-            <div className="flex h-48 w-full items-center justify-center">
-                <Spinner size="lg" />
+            <div className="flex justify-center">
+                <Loader2Icon className="animate-spin" />
             </div>
         )
     }
@@ -44,7 +54,7 @@ export const ExpensesList = () => {
             <div
                 role="list"
                 aria-label="expenses"
-                className="flex h-40 flex-col items-center justify-center bg-white text-gray-500"
+                className="flex h-40 flex-col items-center justify-center text-muted-foreground"
             >
                 <ArchiveX className="size-10" />
                 <h4>No expenses found</h4>
@@ -70,8 +80,8 @@ export const ExpensesList = () => {
             ))}
             <div ref={lastExpenseRef} />
             {expensesQuery.isFetchingNextPage && (
-                <div className="flex w-full justify-center py-4">
-                    <Spinner size="sm" />
+                <div className="flex justify-center">
+                    <Loader2Icon className="animate-spin" />
                 </div>
             )}
         </div>

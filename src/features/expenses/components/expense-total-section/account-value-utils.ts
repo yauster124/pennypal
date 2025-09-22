@@ -15,13 +15,12 @@ function generateDateRange(start: Date, end: Date): string[] {
 
 export function toChartData(
   data: Record<string, AccountValuePoint[]>,
-  startDate: Date,
-  endDate: Date
 ): AccountValueChartDatum[] {
   const result: AccountValueChartDatum[] = []
   const lastValues: Record<string, string> = {}
+  const startDate = data["TOTAL"]?.[0]?.date ?? new Date();
 
-  const allDates = generateDateRange(startDate, endDate)
+  const allDates = generateDateRange(startDate, new Date())
 
   for (const date of allDates) {
     const row: AccountValueChartDatum = { date }

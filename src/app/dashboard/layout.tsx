@@ -20,18 +20,14 @@ export default function DashboardLayout({
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <Link href="/dashboard/home" legacyBehavior passHref>
-                                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                        Home
-                                    </NavigationMenuLink>
-                                </Link>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
+                                    <Link href="/dashboard/home">Home</Link>
+                                </NavigationMenuLink>
                             </NavigationMenuItem>
                             <NavigationMenuItem>
-                                <Link href="/dashboard/expenses" legacyBehavior passHref>
-                                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                        Expenses
-                                    </NavigationMenuLink>
-                                </Link>
+                                <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
+                                    <Link href="/dashboard/expenses">Expenses</Link>
+                                </NavigationMenuLink>
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>

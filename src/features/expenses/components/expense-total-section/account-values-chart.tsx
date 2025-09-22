@@ -26,7 +26,7 @@ export const AccountValuesChart = ({
                     tickLine={false}
                     axisLine={false}
                     tickMargin={8}
-                    tickFormatter={(value) => value.slice(0, 3)}
+                    interval="preserveStartEnd"
                 />
                 <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
                 {Object.keys(chartConfig).map((account, index) => (
