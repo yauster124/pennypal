@@ -8,9 +8,8 @@ export const AccountCard = ({
     account: Account
 }) => {
     const toggle = useAccountStore((s) => s.toggle);
-    const isSelected = useAccountStore((s) => s.isSelected);
-
-    const active = isSelected(account.id);
+    const selectedIds = useAccountStore((s) => s.selectedIds);
+    const active = selectedIds.includes(String(account.id));
 
     return (
         <button
