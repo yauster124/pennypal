@@ -39,7 +39,7 @@ export const ExpensesList = () => {
 
             if (node) observer.current.observe(node);
         },
-        [expensesQuery.isFetchingNextPage, expensesQuery.hasNextPage, expensesQuery.fetchNextPage]
+        [expensesQuery]
     );
 
     if (expensesQuery.isLoading) {

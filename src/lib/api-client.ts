@@ -88,7 +88,6 @@ async function fetchApi<T>(
         method = 'GET',
         headers = {},
         body,
-        cookie,
         params,
         cache = 'no-store',
         next,

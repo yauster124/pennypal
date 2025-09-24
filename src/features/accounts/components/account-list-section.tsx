@@ -17,7 +17,7 @@ export const AccountListSection = () => {
         if (getAccounts.isSuccess) {
             initialize((getAccounts.data || []).map((a) => a.id));
         }
-    }, [getAccounts.isSuccess]);
+    }, [getAccounts.isSuccess, getAccounts.data, initialize]);
 
     return (
         <Card className="w-full">

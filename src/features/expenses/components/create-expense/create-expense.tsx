@@ -18,9 +18,7 @@ export const CreateExpense = ({
     return (
         <Dialog
             open={isOpen}
-            onOpenChange={(openValue) => {
-                openValue ? open("create-expense") : close("create-expense");
-            }}
+            onOpenChange={(openValue) => openValue ? open("create-expense") : close("create-expense")}
         >
             <DialogTrigger asChild>
                 {trigger}

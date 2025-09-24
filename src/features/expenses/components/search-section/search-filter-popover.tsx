@@ -71,11 +71,7 @@ export const SearchFilterPopover = ({
                             <Checkbox
                                 id={category.id}
                                 checked={categoryIds ? categoryIds.includes(category.id) : false}
-                                onCheckedChange={(checked) => {
-                                    checked
-                                        ? addCategoryId(category.id)
-                                        : removeCategoryId(category.id);
-                                }}
+                                onCheckedChange={(checked) => checked ? addCategoryId(category.id) : removeCategoryId(category.id)}
                             />
                             <Label className="font-normal" htmlFor={category.id}>{category.name}</Label>
                         </div>
