@@ -4,6 +4,7 @@ import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
 import { cn } from "@/lib/utils"
+import { ValueType } from "recharts/types/component/DefaultTooltipContent"
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
@@ -118,6 +119,7 @@ function ChartTooltipContent({
   color,
   nameKey,
   labelKey,
+  valueFormatter
 }: React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
   React.ComponentProps<"div"> & {
     hideLabel?: boolean
@@ -125,6 +127,7 @@ function ChartTooltipContent({
     indicator?: "line" | "dot" | "dashed"
     nameKey?: string
     labelKey?: string
+    valueFormatter?: (value: ValueType) => string
   }) {
   const { config } = useChart()
 
@@ -235,8 +238,8 @@ function ChartTooltipContent({
                         </span>
                       </div>
                       {item.value && (
-                        <span className="text-foreground font-mono font-medium tabular-nums">
-                          {item.value.toLocaleString()}
+                        <span className="ml-2 text-foreground font-mono font-medium tabular-nums">
+                          {valueFormatter ? valueFormatter(item.value) : item.value.toLocaleString()}
                         </span>
                       )}
                     </div>

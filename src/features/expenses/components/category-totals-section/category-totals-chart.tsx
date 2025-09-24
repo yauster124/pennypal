@@ -20,15 +20,22 @@ export const CategoryTotalChart = ({
             <PieChart>
                 <ChartTooltip
                     cursor={false}
-                    content={<ChartTooltipContent hideLabel />}
+                    content={
+                        <ChartTooltipContent
+                            hideLabel={false}
+                            valueFormatter={(value) => value.toLocaleString("en-GB", {
+                                style: "currency",
+                                currency: "GBP",
+                            })}
+                        />}
                 />
                 <Pie
                     data={chartData}
                     dataKey="amount"
                     nameKey="category"
-                    innerRadius={70}
+                    innerRadius={90}
                     strokeWidth={5}
-                    outerRadius={110}
+                    outerRadius={130}
                 >
                     {chartData?.map((entry) => {
                         const config = chartConfig[entry.category]
@@ -52,9 +59,12 @@ export const CategoryTotalChart = ({
                                         <tspan
                                             x={viewBox.cx}
                                             y={viewBox.cy}
-                                            className="fill-foreground text-3xl font-bold"
+                                            className="fill-foreground text-2xl font-semibold"
                                         >
-                                            £{expenseTotal}
+                                            {expenseTotal.toLocaleString("en-GB", {
+                                                style: "currency",
+                                                currency: "GBP",
+                                            })}
                                         </tspan>
                                     </text>
                                 )

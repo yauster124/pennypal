@@ -28,9 +28,18 @@ export const AccountValuesChart = ({
                     tickMargin={8}
                     interval="preserveStartEnd"
                 />
-                <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+                <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent
+                        valueFormatter={(value) => value.toLocaleString("en-GB", {
+                            style: "currency",
+                            currency: "GBP",
+                        })}
+                    />}
+                />
                 {Object.keys(chartConfig).map((account, index) => (
                     <Line
+                        key={index}
                         dataKey={account}
                         type="monotone"
                         stroke={chartColours[index % chartColours.length]}

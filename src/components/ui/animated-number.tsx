@@ -19,7 +19,7 @@ export default function AnimatedNumber({
             format={{ style: "currency", currency: "GBP", trailingZeroDisplay: "stripIfInteger", signDisplay: "always" }}
             spinTiming={{ duration: 1000 }}
             className={cn(
-                "text-3xl font-bold",
+                "text-2xl font-semibold",
                 value < 0 ? "text-destructive" : "text-constructive"
             )}
         />
