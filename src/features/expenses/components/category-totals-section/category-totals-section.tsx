@@ -31,7 +31,7 @@ export const CategoryTotalsSection = () => {
             amount: entry.totalAmount
         }
     })
-    const expenseTotal = chartData?.reduce((acc, curr) => acc + Number(curr.amount), 0)
+    const expenseTotal = chartData?.reduce((acc, curr) => acc + Number(curr.amount), 0).toFixed(2);
 
     const tabs = [
         { value: "1m", label: "1M" },
@@ -83,10 +83,10 @@ export const CategoryTotalsSection = () => {
                                 <CategoryTotalChart
                                     chartConfig={chartConfig}
                                     chartData={chartData}
-                                    expenseTotal={expenseTotal || 0}
+                                    expenseTotal={Number(expenseTotal) || 0}
                                 />
                             ) : (
-                                <div className="flex justify-center">
+                                <div className="flex flex-col justify-center items-center">
                                     <span className="text-sm text-muted-foreground">Nothing to show</span>
                                 </div>
                             )}

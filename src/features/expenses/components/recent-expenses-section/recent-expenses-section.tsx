@@ -2,13 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2Icon, PlusIcon } from "lucide-react";
-import { CreateExpense } from "../create-expense";
+import { PlusIcon } from "lucide-react";
+import { CreateExpense } from "../create-expense/create-expense";
 import { useGetRecentExpenses } from "../../api/get-recent-expenses";
 import { useAccountStore } from "@/features/accounts/store/account-store";
 import { ExpenseRecord } from "../expense-record";
 import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ExpenseRecordSkeleton } from "../expense-record-skeleton";
 
 export const RecentExpensesSection = () => {

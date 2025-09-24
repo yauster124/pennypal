@@ -1,4 +1,4 @@
-import { AppleIcon, BikeIcon, BookOpenIcon, BriefcaseBusinessIcon, BusFrontIcon, CalendarIcon, CardSimIcon, CarFrontIcon, CarTaxiFrontIcon, CircleParkingIcon, CirclePoundSterlingIcon, CircleQuestionMarkIcon, Clapperboard, ConstructionIcon, FolderCodeIcon, FootprintsIcon, FuelIcon, GiftIcon, GraduationCapIcon, HamburgerIcon, HammerIcon, HandCoinsIcon, HandshakeIcon, HeartPlusIcon, HeaterIcon, HouseHeartIcon, HouseIcon, LampIcon, LandmarkIcon, LaughIcon, MonitorSmartphoneIcon, PencilRulerIcon, PhoneCallIcon, PlaneIcon, ScanHeartIcon, ShirtIcon, ShoppingCartIcon, TrainFrontIcon, TramFrontIcon, TreePalmIcon, UtensilsIcon, VolleyballIcon, WatchIcon, WifiIcon } from "lucide-react"
+import { AppleIcon, ArrowRightLeftIcon, BikeIcon, BookOpenIcon, BriefcaseBusinessIcon, BusFrontIcon, CalendarIcon, CardSimIcon, CarFrontIcon, CarTaxiFrontIcon, CircleParkingIcon, CirclePoundSterlingIcon, CircleQuestionMarkIcon, Clapperboard, ConstructionIcon, FolderCodeIcon, FootprintsIcon, FuelIcon, GiftIcon, GraduationCapIcon, HamburgerIcon, HammerIcon, HandCoinsIcon, HandshakeIcon, HeartPlusIcon, HeaterIcon, HouseHeartIcon, HouseIcon, LampIcon, LandmarkIcon, LaughIcon, MonitorSmartphoneIcon, PencilRulerIcon, PhoneCallIcon, PlaneIcon, PodcastIcon, ScanHeartIcon, ShirtIcon, ShoppingCartIcon, TrainFrontIcon, TramFrontIcon, TreePalmIcon, UtensilsIcon, VolleyballIcon, WatchIcon, WifiIcon } from "lucide-react"
 
 export const getCategoryIcon = ({
     categoryName
@@ -98,6 +98,14 @@ export const getCategoryIcon = ({
             return <GiftIcon />
         case "Sales":
             return <HandshakeIcon />
+        case "Interest":
+            return <CirclePoundSterlingIcon />
+        case "Investment Returns":
+            return <CirclePoundSterlingIcon />
+        case "Transfer":
+            return <ArrowRightLeftIcon />
+        case "Subscription":
+            return <PodcastIcon />
         default:
             return <CircleQuestionMarkIcon />
     }

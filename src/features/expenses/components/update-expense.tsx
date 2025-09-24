@@ -16,6 +16,8 @@ import { useGetAccounts } from "@/features/accounts/api/get-accounts";
 import { Expense } from "@/types/api";
 import { UpdateExpenseInput, updateExpenseInputSchema, useUpdateExpense } from "../api/update-expense";
 import { useEffect } from "react";
+import { CurrencyInput } from "@/components/ui/currency-input";
+import { DeleteExpense } from "./delete-expense";
 
 export const UpdateExpense = ({
     trigger,
@@ -42,7 +44,7 @@ export const UpdateExpense = ({
             name: expense.name,
             amount: Math.abs(Number(expense.amount)),
             date: new Date(expense.date),
-            categoryId: expense.category.id,
+            categoryId: expense.category ? expense.category.id : undefined,
             accountId: expense.account.id
         }
     });
@@ -53,7 +55,7 @@ export const UpdateExpense = ({
                 name: expense.name,
                 amount: Math.abs(Number(expense.amount)),
                 date: new Date(expense.date),
-                categoryId: expense.category.id,
+                categoryId: expense.category ? expense.category.id : undefined,
                 accountId: expense.account.id
             })
         }
@@ -76,86 +78,97 @@ export const UpdateExpense = ({
                                 form.reset();
                             })
                         }
-                        className="space-y-4"
                     >
-                        <DialogHeader>
+                        <DialogHeader className="mb-4">
                             <DialogTitle>Update expense</DialogTitle>
                         </DialogHeader>
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Name</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="amount"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Amount</FormLabel>
-                                    <FormControl>
-                                        <Input type="number" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="date"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Date</FormLabel>
-                                    <FormControl>
-                                        <DatePicker {...field} />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="categoryId"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Category</FormLabel>
-                                    <FormControl>
-                                        <CategoryCombobox categories={getCategories.data} {...field} placeholder="Select a category" />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="accountId"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Account</FormLabel>
-                                    <FormControl>
-                                        <Combobox data={accounts || []} {...field} placeholder="Select an account" />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
-                        <DialogFooter>
-                            <DialogClose asChild>
-                                <Button variant="outline">Cancel</Button>
-                            </DialogClose>
-                            {updateExpense.isPending ? (
-                                <Button disabled>
-                                    <Loader2Icon className="animate-spin" />
-                                    Please wait
-                                </Button>
-                            ) : (
-                                <Button type="submit">Update expense</Button>
-                            )}
-                        </DialogFooter>
+                        <div className="space-y-4 mb-8">
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Name</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="amount"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Amount</FormLabel>
+                                        <FormControl>
+                                            <CurrencyInput {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="date"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Date</FormLabel>
+                                        <FormControl>
+                                            <DatePicker {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="categoryId"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Category</FormLabel>
+                                        <FormControl>
+                                            <CategoryCombobox categories={getCategories.data} {...field} placeholder="Select a category" />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="accountId"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Account</FormLabel>
+                                        <FormControl>
+                                            <Combobox data={accounts || []} {...field} placeholder="Select an account" />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <div className="flex justify-between">
+                            <div className="flex">
+                                <DeleteExpense
+                                    trigger={
+                                        <Button variant="destructive">Delete</Button>
+                                    }
+                                    expenseId={expense.id}
+                                />
+                            </div>
+                            <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                                <DialogClose asChild>
+                                    <Button variant="outline">Cancel</Button>
+                                </DialogClose>
+                                {updateExpense.isPending ? (
+                                    <Button disabled>
+                                        <Loader2Icon className="animate-spin" />
+                                        Please wait
+                                    </Button>
+                                ) : (
+                                    <Button type="submit">Save</Button>
+                                )}
+                            </div>
+                        </div>
                     </form>
                 </Form>
             </DialogContent>

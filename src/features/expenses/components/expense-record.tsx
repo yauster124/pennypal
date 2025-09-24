@@ -13,7 +13,7 @@ export const ExpenseRecord = ({
         <div className="flex items-start justify-between w-full p-4 rounded-lg bg-card">
             <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-primary-foreground">
-                    {getCategoryIcon({ categoryName: expense.category.name })}
+                    {getCategoryIcon({ categoryName: expense.category ? expense.category.name : "" })}
                 </div>
                 <div className="flex flex-col">
                     <UpdateExpense

@@ -1,13 +1,13 @@
+import { AccountValueChartData } from "@/features/expenses/components/expense-total-section/account-value-types";
 import { api } from "@/lib/api-client"
-import { AccountValuePoint } from "@/types/api";
 import { useQuery } from "@tanstack/react-query";
 
 export const getAccountValues = ({
     startDate
 }: {
-    startDate: string
+    startDate?: string
 }) => {
-    return api.get<Record<string, AccountValuePoint[]>>("/accountvalue",
+    return api.get<AccountValueChartData>("/expenses/account-values",
         {
             params: {
                 startDate: startDate
@@ -19,10 +19,10 @@ export const getAccountValues = ({
 export const useGetAccountValues = ({
     startDate
 }: {
-    startDate: string
+    startDate?: string
 }) => {
-    return useQuery<Record<string, AccountValuePoint[]>>({
-        queryKey: ["accountvalues"],
+    return useQuery<AccountValueChartData>({
+        queryKey: ["accountvalues", startDate],
         queryFn: () => getAccountValues({ startDate: startDate })
     });
 }

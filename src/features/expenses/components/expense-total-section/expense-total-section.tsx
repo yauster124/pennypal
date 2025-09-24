@@ -11,14 +11,13 @@ import { useGetAccountValues } from "@/features/accounts/api/get-account-values"
 import { chartColours } from "@/lib/generate-chart-config";
 import { AccountValuesChart } from "./account-values-chart";
 import { ChartConfig } from "@/components/ui/chart";
-import { toChartData } from "./account-value-utils";
 import { Loader2Icon } from "lucide-react";
 
 export const ExpenseTotalSection = () => {
     const selectedIds = useAccountStore((s) => s.selectedIds);
     const today = new Date();
     const [startDate, setStartDate] = useState<Date | null>(subMonths(today, 1));
-    const startDateStr = format(startDate || subMonths(today, 1), "yyyy-MM-dd");
+    const startDateStr = startDate ? format(startDate, "yyyy-MM-dd") : undefined;
 
     const getTotalQuery = useGetTotal({
         accountIds: selectedIds,
@@ -27,17 +26,19 @@ export const ExpenseTotalSection = () => {
     });
 
     const getAccountValues = useGetAccountValues({ startDate: startDateStr });
-    const chartData = toChartData(getAccountValues.data || {});
-    const chartConfig: ChartConfig = Object.keys(getAccountValues.data || {}).reduce(
-        (acc, key, idx) => {
-            acc[key] = {
-                label: key,
-                color: chartColours[idx % chartColours.length],
-            }
-            return acc
-        },
-        {} as ChartConfig
-    )
+    const chartData = getAccountValues.data;
+    const chartConfig: ChartConfig = (getAccountValues.data?.length
+        ? Object.keys(getAccountValues.data[0]).filter(k => k !== "date")
+        : []
+    ).reduce((acc, key, idx) => {
+        acc[key] = {
+            label: key,
+            color: chartColours[idx % chartColours.length],
+        }
+        return acc
+    }, {} as ChartConfig);
+    console.log(chartConfig);
+
 
     const tabs = [
         { value: "1m", label: "1M" },
@@ -78,7 +79,7 @@ export const ExpenseTotalSection = () => {
                         ))}
                     </TabsList>
                     {tabs.map((tab) => (
-                        <TabsContent key={tab.value} value={tab.value}>
+                        <TabsContent key={tab.value} value={tab.value} className="min-h-[400px]">
                             {getTotalQuery.isPending ? (
                                 <div className="flex justify-center">
                                     <Loader2Icon className="animate-spin" />
@@ -88,7 +89,7 @@ export const ExpenseTotalSection = () => {
                                     <div className="flex justify-center">
                                         <AnimatedNumber target={Number(getTotalQuery.data.total)} />
                                     </div>
-                                    <AccountValuesChart chartConfig={chartConfig} chartData={chartData} />
+                                    <AccountValuesChart chartConfig={chartConfig} chartData={chartData || []} />
                                 </div>
                             ) : (
                                 <div className="flex justify-center">

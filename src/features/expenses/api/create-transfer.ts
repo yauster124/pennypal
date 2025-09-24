@@ -4,29 +4,28 @@ import { toUTCDateAtMidnight } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import z from "zod";
 
-export const createExpenseInputSchema = z.object({
-    name: z.string().min(1, "Required"),
+export const createTransferInputSchema = z.object({
     amount: z.coerce.number(),
     date: z.date().transform(toUTCDateAtMidnight),
-    categoryId: z.coerce.string().nullable(),
-    accountId: z.coerce.string()
+    accountFromId: z.coerce.string(),
+    accountToId: z.coerce.string()
 });
 
-export type CreateExpenseInput = z.infer<typeof createExpenseInputSchema>;
+export type CreateTransferInput = z.infer<typeof createTransferInputSchema>;
 
-export const createExpense = ({
+export const createTransfer = ({
     data
 }: {
-    data: CreateExpenseInput
+    data: CreateTransferInput
 }) => {
-    return api.post("/expenses", data);
+    return api.post("/expenses/transfer", data);
 }
 
-export const useCreateExpense = () => {
+export const useCreateTransfer = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: createExpense,
+        mutationFn: createTransfer,
         onSuccess: () => {
             queryClient.refetchQueries({
                 queryKey: ["recent-expenses"]
@@ -39,9 +38,6 @@ export const useCreateExpense = () => {
             });
             queryClient.refetchQueries({
                 queryKey: ["accounts"]
-            });
-            queryClient.refetchQueries({
-                queryKey: ["accountvalues"]
             });
             useUIStore.getState().close("create-expense");
         }
