@@ -95,11 +95,6 @@ async function fetchApi<T>(
         authRequired = true
     } = options;
 
-    let cookieHeader = cookie;
-    if (typeof window === 'undefined' && !cookie) {
-        cookieHeader = await getServerCookies();
-    }
-
     let accessToken: string | undefined;
 
     if (authRequired) {

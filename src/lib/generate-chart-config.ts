@@ -1,5 +1,4 @@
 import { ChartConfig } from "@/components/ui/chart"
-import { AccountValuePoint } from "@/types/api";
 
 export const chartColours = [
     "var(--chart-1)",

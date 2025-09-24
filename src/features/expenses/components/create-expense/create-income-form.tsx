@@ -1,7 +1,6 @@
 "use client"
 
-import { useUIStore } from "@/components/store/ui-store";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { DialogClose, DialogFooter } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { CreateExpenseInput, createExpenseInputSchema, useCreateExpense } from "../../api/create-expense";
 import { Resolver, useForm } from "react-hook-form";

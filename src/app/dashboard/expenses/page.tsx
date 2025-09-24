@@ -1,4 +1,3 @@
-import { SearchInput } from "@/components/ui/search-input";
 import { ExpensesList } from "@/features/expenses/components/expenses-list";
 import { SearchSection } from "@/features/expenses/components/search-section/search-section";
 

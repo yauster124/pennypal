@@ -9,7 +9,6 @@ export const AccountCard = ({
 }) => {
     const toggle = useAccountStore((s) => s.toggle);
     const isSelected = useAccountStore((s) => s.isSelected);
-    const selectedIds = useAccountStore((s) => s.selectedIds);
 
     const active = isSelected(account.id);
 

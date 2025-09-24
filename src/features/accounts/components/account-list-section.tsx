@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGetAccounts } from "../api/get-accounts";
 import { AccountCard } from "./account-card";
 import { Button } from "@/components/ui/button";
-import { Loader2Icon, PlusIcon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import { useAccountStore } from "../store/account-store";
 import { useEffect } from "react";
 import { CreateAccount } from "./create-account";

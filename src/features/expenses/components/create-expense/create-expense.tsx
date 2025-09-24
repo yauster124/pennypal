@@ -1,10 +1,7 @@
 "use client"
 
 import { useUIStore } from "@/components/store/ui-store";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { CreateExpenseInput, createExpenseInputSchema } from "../../api/create-expense";
-import { Resolver, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CreateExpenseForm } from "./create-expense-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CreateIncomeForm } from "./create-income-form";
