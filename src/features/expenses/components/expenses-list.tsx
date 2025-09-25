@@ -2,11 +2,12 @@
 
 import { useGetExpenses } from "../api/get-expenses";
 import { ArchiveX, Loader2Icon } from "lucide-react";
-import { ExpenseRecord } from "./expense-record";
 import { useCallback, useRef } from "react";
-import { groupByMonth } from "@/lib/utils";
+import { cn, groupByMonthAndDay } from "@/lib/utils";
 import { useSearchFiltersStore } from "../store/search-filters-store";
 import { format } from "date-fns";
+import { ExpenseListRecord } from "./expense-list-record";
+import { Separator } from "@/components/ui/separator";
 
 export const ExpensesList = () => {
     const searchQuery = useSearchFiltersStore((s) => s.searchQuery);
@@ -22,7 +23,7 @@ export const ExpensesList = () => {
     });
 
     const expenses = expensesQuery.data?.pages.flatMap((page) => page.content);
-    const groupedExpenses = groupByMonth(expenses || []);
+    const groupedExpenses = groupByMonthAndDay(expenses || []);
 
     const observer = useRef<IntersectionObserver | null>(null);
     const lastExpenseRef = useCallback(
@@ -64,18 +65,27 @@ export const ExpensesList = () => {
     }
 
     return (
-        <div className="flex flex-col gap-4">
-            {Object.entries(groupedExpenses).map(([month, expenses]) => (
-                <div key={month}>
-                    <h3 className="text-sm text-muted-foreground font-semibold mb-2">{month}</h3>
-                    <div className="flex flex-col rounded-lg bg-card">
-                        {expenses.map(exp => (
-                            <ExpenseRecord
-                                key={exp.id}
-                                expense={exp}
-                            />
-                        )
-                        )}
+        <>
+            {Object.entries(groupedExpenses).map(([month, expensesByDay], index) => (
+                <div key={index}>
+                    <h3 className="text-sm text-muted-foreground font-semibold mb-2 ml-2 mt-2">{month}</h3>
+                    <div className="rounded-lg bg-card">
+                        {Object.entries(expensesByDay).map(([day, expenses], index) => (
+                            <div key={index} className={cn(
+                                "p-4",
+                                index < Object.entries(expensesByDay).length ? "border-b" : ""
+                            )}>
+                                <h3 className="text-sm text-muted-foreground font-semibold mb-6">{day}</h3>
+                                <div className="flex flex-col gap-5">
+                                    {expenses.map(exp => (
+                                        <ExpenseListRecord
+                                            key={exp.id}
+                                            expense={exp}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             ))}
@@ -85,6 +95,28 @@ export const ExpensesList = () => {
                     <Loader2Icon className="animate-spin" />
                 </div>
             )}
-        </div>
+        </>
+        // <div className="flex flex-col gap-4 rounded-lg bg-card">
+        //     {Object.entries(groupedExpenses).map(([month, expenses]) => (
+        //         <div key={month}>
+        //             <h3 className="text-sm text-muted-foreground font-semibold mb-2 ml-2 mt-2">{month}</h3>
+        //             <div className="flex flex-col">
+        //                 {expenses.map(exp => (
+        //                     <ExpenseListRecord
+        //                         key={exp.id}
+        //                         expense={exp}
+        //                     />
+        //                 )
+        //                 )}
+        //             </div>
+        //         </div>
+        //     ))}
+        //     <div ref={lastExpenseRef} />
+        //     {expensesQuery.isFetchingNextPage && (
+        //         <div className="flex justify-center">
+        //             <Loader2Icon className="animate-spin" />
+        //         </div>
+        //     )}
+        // </div>
     )
 }

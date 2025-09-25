@@ -30,6 +30,9 @@ export const useUpdateExpense = () => {
         mutationFn: updateExpense,
         onSuccess: (_, variables) => {
             queryClient.refetchQueries({
+                queryKey: ["expenses"]
+            });
+            queryClient.refetchQueries({
                 queryKey: ["recent-expenses"]
             });
             queryClient.refetchQueries({

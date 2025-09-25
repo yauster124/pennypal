@@ -37,8 +37,6 @@ export const ExpenseTotalSection = () => {
         }
         return acc
     }, {} as ChartConfig);
-    console.log(chartConfig);
-
 
     const tabs = [
         { value: "1m", label: "1M" },

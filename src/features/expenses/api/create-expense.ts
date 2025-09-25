@@ -29,6 +29,9 @@ export const useCreateExpense = () => {
         mutationFn: createExpense,
         onSuccess: () => {
             queryClient.refetchQueries({
+                queryKey: ["expenses"]
+            });
+            queryClient.refetchQueries({
                 queryKey: ["recent-expenses"]
             });
             queryClient.refetchQueries({
