@@ -8,6 +8,7 @@ export interface Expense {
 }
 
 export type CategoryType = "INCOME" | "EXPENSE";
+export type ExpenseType = "INCOME" | "EXPENSE" | "TRANSFER";
 
 export interface Category {
     id: string

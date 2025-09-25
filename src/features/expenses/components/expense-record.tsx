@@ -1,7 +1,7 @@
 import { getCategoryIcon } from "@/features/categories/components/get-category-icon"
 import { Expense } from "@/types/api"
 import { formatDate } from "date-fns";
-import { UpdateExpense } from "./update-expense";
+import { UpdateExpense } from "./update-expense/update-expense";
 import { cn } from "@/lib/utils";
 
 export const ExpenseRecord = ({

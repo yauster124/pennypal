@@ -4,7 +4,6 @@ import { useUIStore } from "@/components/store/ui-store";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CreateExpenseForm } from "./create-expense-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CreateIncomeForm } from "./create-income-form";
 import { CreateTransferForm } from "./create-transfer-form";
 
 export const CreateExpense = ({
@@ -40,10 +39,10 @@ export const CreateExpense = ({
                         </TabsTrigger>
                     </TabsList>
                     <TabsContent value="expense">
-                        <CreateExpenseForm />
+                        <CreateExpenseForm expenseType="EXPENSE" />
                     </TabsContent>
                     <TabsContent value="income">
-                        <CreateIncomeForm />
+                        <CreateExpenseForm expenseType="INCOME" />
                     </TabsContent>
                     <TabsContent value="transfer">
                         <CreateTransferForm />

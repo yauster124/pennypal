@@ -14,8 +14,13 @@ import { CategoryCombobox } from "@/features/categories/components/category-comb
 import { Combobox } from "@/components/ui/combobox";
 import { useGetAccounts } from "@/features/accounts/api/get-accounts";
 import { CurrencyInput } from "@/components/ui/currency-input";
+import { ExpenseType } from "@/types/api";
 
-export const CreateExpenseForm = () => {
+export const CreateExpenseForm = ({
+    expenseType
+}: {
+    expenseType: ExpenseType
+}) => {
     const createExpense = useCreateExpense();
     const getCategories = useGetCategories();
     const getAccounts = useGetAccounts();
@@ -95,7 +100,7 @@ export const CreateExpenseForm = () => {
                         <FormItem>
                             <FormLabel>Category</FormLabel>
                             <FormControl>
-                                <CategoryCombobox categories={getCategories.data?.filter((c) => c.type === "EXPENSE")} {...field} placeholder="Select a category" />
+                                <CategoryCombobox categories={getCategories.data?.filter((c) => c.type === expenseType)} {...field} placeholder="Select a category" />
                             </FormControl>
                         </FormItem>
                     )}
