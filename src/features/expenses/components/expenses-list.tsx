@@ -7,7 +7,6 @@ import { cn, groupByMonthAndDay } from "@/lib/utils";
 import { useSearchFiltersStore } from "../store/search-filters-store";
 import { format } from "date-fns";
 import { ExpenseListRecord } from "./expense-list-record";
-import { Separator } from "@/components/ui/separator";
 
 export const ExpensesList = () => {
     const searchQuery = useSearchFiltersStore((s) => s.searchQuery);

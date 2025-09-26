@@ -44,13 +44,14 @@ export const NumberDisplay = ({
                 <>
                     <span className={
                         cn(
-                            "ml-[0.1em]",
+                            "ml-[0.1em] tabular-nums",
                             variant === "small" && "text-xl",
                             variant === "large" && "text-3xl"
                         )}>
                         {formattedPounds}
                     </span>
                     <span className={cn(
+                        "tabular-nums",
                         variant === "large" && "text-xl"
                     )}>
                         .{pence}

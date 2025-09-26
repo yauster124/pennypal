@@ -3,13 +3,26 @@ import { chartColours } from "@/lib/generate-chart-config"
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 import { AccountValueChartData } from "./account-value-types"
 
+const generateChartConfig = (chartData: AccountValueChartData): ChartConfig => {
+    return (chartData.length
+        ? Object.keys(chartData[0]).filter(k => k !== "date")
+        : []
+    ).reduce((acc, key, idx) => {
+        acc[key] = {
+            label: key,
+            color: chartColours[idx % chartColours.length],
+        }
+        return acc
+    }, {} as ChartConfig);
+}
+
 export const AccountValuesChart = ({
-    chartConfig,
     chartData
 }: {
-    chartConfig: ChartConfig,
     chartData: AccountValueChartData
 }) => {
+    const chartConfig = generateChartConfig(chartData);
+
     return (
         <ChartContainer config={chartConfig} className="min-w-[400px] min-h-[300px]">
             <LineChart
@@ -26,7 +39,14 @@ export const AccountValuesChart = ({
                     tickLine={false}
                     axisLine={false}
                     tickMargin={8}
-                    interval="preserveStartEnd"
+                    minTickGap={32}
+                    tickFormatter={(value) => {
+                        const date = new Date(value);
+                        return date.toLocaleDateString("en-GB", {
+                            month: "short",
+                            day: "numeric",
+                        });
+                    }}
                 />
                 <ChartTooltip
                     cursor={false}

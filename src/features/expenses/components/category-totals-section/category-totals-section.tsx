@@ -17,7 +17,10 @@ export const CategoryTotalsSection = () => {
     const [startDate, setStartDate] = useState(subMonths(today, 1));
     const startDateStr = format(startDate, "yyyy-MM-dd")
     const selectedIds = useAccountStore((s) => s.selectedIds);
-    const getCategoryTotals = useGetCategoryTotals({ accountIds: selectedIds, startDate: startDateStr });
+    const getCategoryTotals = useGetCategoryTotals(
+        { accountIds: selectedIds, startDate: startDateStr },
+        { placeholderData: (prev) => prev }
+    );
 
     const chartConfig: ChartConfig = buildChartConfig(
         getCategoryTotals.data,
@@ -75,7 +78,22 @@ export const CategoryTotalsSection = () => {
 
                     {tabs.map((tab) => (
                         <TabsContent key={tab.value} value={tab.value} className="min-h-[300px]">
-                            {getCategoryTotals.isPending ? (
+                            {getCategoryTotals.data && (
+                                <CategoryTotalChart
+                                    chartConfig={chartConfig}
+                                    chartData={chartData}
+                                    expenseTotal={Number(expenseTotal) || 0}
+                                />
+                            ) : getCategoryTotals.isPending ? (
+                                <div className="flex justify-center">
+                                    <Loader2Icon className="animate-spin" />
+                                </div>
+                            ) : (
+                                <div className="flex flex-col justify-center items-center">
+                                    <span className="text-sm text-muted-foreground">Nothing to show</span>
+                                </div>
+                            )}
+                            {/* {getCategoryTotals.isPending ? (
                                 <div className="flex justify-center">
                                     <Loader2Icon className="animate-spin" />
                                 </div>
@@ -89,7 +107,7 @@ export const CategoryTotalsSection = () => {
                                 <div className="flex flex-col justify-center items-center">
                                     <span className="text-sm text-muted-foreground">Nothing to show</span>
                                 </div>
-                            )}
+                            )} */}
                         </TabsContent>
                     ))}
                 </Tabs>

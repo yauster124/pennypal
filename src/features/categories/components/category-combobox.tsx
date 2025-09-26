@@ -1,5 +1,5 @@
 import * as React from "react"
-import { CheckIcon, ChevronsUpDownIcon, ArrowLeftIcon } from "lucide-react"
+import { CheckIcon, ArrowLeftIcon, ChevronDownIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
@@ -40,7 +40,7 @@ export const CategoryCombobox = ({
                     className="w-[240px] justify-between font-normal"
                 >
                     {selectedLabel}
-                    <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[240px] p-0">

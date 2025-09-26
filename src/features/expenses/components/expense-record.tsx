@@ -31,7 +31,7 @@ export const ExpenseRecord = ({
             <div className="flex flex-col items-end">
                 <span className={cn(
                     Number(expense.amount) > 0 ? "text-constructive" : "",
-                    "font-semibold text-sm"
+                    "font-semibold text-sm tabular-nums"
                 )}>
                     {new Intl.NumberFormat("en-GB", {
                         style: "currency",

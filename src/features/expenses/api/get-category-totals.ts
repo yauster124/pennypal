@@ -1,5 +1,5 @@
 import { api } from "@/lib/api-client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryOptions, UseQueryResult } from "@tanstack/react-query";
 
 export type CategoryExpenseSummary = {
     categoryId: string;
@@ -15,25 +15,31 @@ export const getCategoryTotals = ({
     startDate?: string
 }) => {
     return api.get<CategoryExpenseSummary[]>(
-            "/expenses/category-totals",
-            {
-                params: {
-                    accountIds: accountIds,
-                    startDate: startDate
-                }
+        "/expenses/category-totals",
+        {
+            params: {
+                accountIds: accountIds,
+                startDate: startDate
             }
-        );
+        }
+    );
 }
 
-export const useGetCategoryTotals = ({
-    accountIds,
-    startDate
-}: {
-    accountIds: string[],
-    startDate?: string
-}) => {
+export const useGetCategoryTotals = (
+    {
+        accountIds,
+        startDate
+    }: {
+        accountIds: string[],
+        startDate?: string
+    },
+    options?: Omit<
+        UseQueryOptions<CategoryExpenseSummary[], Error>,
+        "queryKey" | "queryFn"
+    >): UseQueryResult<CategoryExpenseSummary[], Error> => {
     return useQuery<CategoryExpenseSummary[]>({
         queryKey: ["category-totals", accountIds, startDate],
-        queryFn: () => getCategoryTotals({ accountIds: accountIds, startDate: startDate })
+        queryFn: () => getCategoryTotals({ accountIds: accountIds, startDate: startDate }),
+        ...options
     })
 }
