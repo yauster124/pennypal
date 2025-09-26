@@ -68,16 +68,28 @@ export const ExpensesList = () => {
         <>
             {Object.entries(groupedExpenses).map(([month, expensesByDay], index) => (
                 <div key={index}>
-                    <h3 className="text-sm text-muted-foreground font-semibold mb-2 ml-2 mt-2">{month}</h3>
+                    <div className="flex justify-between">
+                        <h3 className="text-sm text-muted-foreground font-semibold mb-2 ml-2 mt-2">{month}</h3>
+                        <h3 className="text-sm text-muted-foreground font-semibold mb-2 ml-2 mt-2">{expensesByDay.total.toLocaleString("en-GB", {
+                            style: "currency",
+                            currency: "GBP",
+                        })}</h3>
+                    </div>
                     <div className="rounded-lg bg-card">
-                        {Object.entries(expensesByDay).map(([day, expenses], index) => (
+                        {Object.entries(expensesByDay.expenses).map(([day, expenses], index) => (
                             <div key={index} className={cn(
                                 "p-4",
-                                index < Object.entries(expensesByDay).length ? "border-b" : ""
+                                index < Object.entries(expensesByDay.expenses).length ? "border-b" : ""
                             )}>
-                                <h3 className="text-sm text-muted-foreground font-semibold mb-6">{day}</h3>
+                                <div className="flex justify-between">
+                                    <h3 className="text-sm text-muted-foreground font-semibold mb-6">{day}</h3>
+                                    <h3 className="text-xs text-muted-foreground mb-2 ml-2 mt-2">{expenses.total.toLocaleString("en-GB", {
+                                        style: "currency",
+                                        currency: "GBP",
+                                    })}</h3>
+                                </div>
                                 <div className="flex flex-col gap-5">
-                                    {expenses.map(exp => (
+                                    {expenses.expenses.map(exp => (
                                         <ExpenseListRecord
                                             key={exp.id}
                                             expense={exp}
@@ -95,28 +107,13 @@ export const ExpensesList = () => {
                     <Loader2Icon className="animate-spin" />
                 </div>
             )}
+            {!expensesQuery.hasNextPage && (
+                <div className="flex justify-center">
+                    <span className="text-muted-foreground">
+                        No more results
+                    </span>
+                </div>
+            )}
         </>
-        // <div className="flex flex-col gap-4 rounded-lg bg-card">
-        //     {Object.entries(groupedExpenses).map(([month, expenses]) => (
-        //         <div key={month}>
-        //             <h3 className="text-sm text-muted-foreground font-semibold mb-2 ml-2 mt-2">{month}</h3>
-        //             <div className="flex flex-col">
-        //                 {expenses.map(exp => (
-        //                     <ExpenseListRecord
-        //                         key={exp.id}
-        //                         expense={exp}
-        //                     />
-        //                 )
-        //                 )}
-        //             </div>
-        //         </div>
-        //     ))}
-        //     <div ref={lastExpenseRef} />
-        //     {expensesQuery.isFetchingNextPage && (
-        //         <div className="flex justify-center">
-        //             <Loader2Icon className="animate-spin" />
-        //         </div>
-        //     )}
-        // </div>
     )
 }

@@ -12,6 +12,7 @@ import { chartColours } from "@/lib/generate-chart-config";
 import { AccountValuesChart } from "./account-values-chart";
 import { ChartConfig } from "@/components/ui/chart";
 import { Loader2Icon } from "lucide-react";
+import { NumberDisplay } from "@/components/ui/number-display";
 
 export const ExpenseTotalSection = () => {
     const selectedIds = useAccountStore((s) => s.selectedIds);
@@ -85,7 +86,8 @@ export const ExpenseTotalSection = () => {
                             ) : getTotalQuery.isSuccess && getTotalQuery.data ? (
                                 <div className="flex flex-col justify-center">
                                     <div className="flex justify-center">
-                                        <AnimatedNumber target={Number(getTotalQuery.data.total)} />
+                                        {/* <AnimatedNumber target={Number(getTotalQuery.data.total)} /> */}
+                                        <NumberDisplay amount={getTotalQuery.data.total} variant="large" animate={true} />
                                     </div>
                                     <AccountValuesChart chartConfig={chartConfig} chartData={chartData || []} />
                                 </div>

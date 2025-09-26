@@ -1,4 +1,4 @@
-import { getCategoryIcon } from "@/features/categories/components/get-category-icon"
+import { CategoryIcon, getCategoryIcon } from "@/features/categories/components/get-category-icon"
 import { Expense } from "@/types/api"
 import { formatDate } from "date-fns";
 import { UpdateExpense } from "./update-expense/update-expense";
@@ -12,9 +12,7 @@ export const ExpenseRecord = ({
     return (
         <div className="flex items-start justify-between w-full p-4 rounded-lg bg-card">
             <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 flex items-center justify-center bg-primary rounded-full text-primary-foreground">
-                    {getCategoryIcon({ categoryName: expense.category ? expense.category.name : "" })}
-                </div>
+                <CategoryIcon category={expense.category} />
                 <div className="flex flex-col">
                     <UpdateExpense
                         expense={expense}
@@ -27,7 +25,7 @@ export const ExpenseRecord = ({
                             </button>
                         }
                     />
-                    <span className="text-xs text-secondary-foreground">{expense.account.name}</span>
+                    <span className="text-xs text-muted-foreground">{expense.account.name}</span>
                 </div>
             </div>
             <div className="flex flex-col items-end">

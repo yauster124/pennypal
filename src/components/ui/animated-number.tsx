@@ -3,9 +3,13 @@ import NumberFlow from "@number-flow/react";
 import { useState, useEffect } from "react";
 
 export default function AnimatedNumber({
-    target
+    target,
+    className,
+    format = true
 }: {
-    target: number
+    target: number,
+    className?: string,
+    format?: boolean
 }) {
     const [value, setValue] = useState(0);
 
@@ -16,11 +20,12 @@ export default function AnimatedNumber({
     return (
         <NumberFlow
             value={value}
-            format={{ style: "currency", currency: "GBP", trailingZeroDisplay: "stripIfInteger", signDisplay: "always" }}
+            format={format ? { style: "currency", currency: "GBP", trailingZeroDisplay: "stripIfInteger", signDisplay: "always" } : {}}
             spinTiming={{ duration: 1000 }}
             className={cn(
-                "text-2xl font-semibold",
-                value < 0 ? "text-destructive" : "text-constructive"
+                "text-2xl",
+                value < 0 ? "text-destructive" : "text-constructive",
+                className
             )}
         />
     );
