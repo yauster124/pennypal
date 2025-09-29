@@ -1,117 +1,101 @@
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartConfig } from "@/components/ui/chart";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGetCategoryTotals } from "../../api/get-category-totals";
 import { useAccountStore } from "@/features/accounts/store/account-store";
-import { CategoryTotalChart } from "./category-totals-chart";
-import { useState } from "react";
+import { CategoryTotalChart, CategoryTotalsChartData } from "./category-totals-chart";
+import { useEffect, useState } from "react";
 import { format, subMonths, subYears } from "date-fns";
-import { buildChartConfig } from "@/lib/generate-chart-config";
 import { Loader2Icon } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+
+type CategoryTotalTimeRange = "1m" | "6m" | "1y" | "max";
 
 export const CategoryTotalsSection = () => {
-    const [selectedTab, setSelectedTab] = useState("1m")
-    const today = new Date()
-    const [startDate, setStartDate] = useState(subMonths(today, 1));
-    const startDateStr = format(startDate, "yyyy-MM-dd")
     const selectedIds = useAccountStore((s) => s.selectedIds);
+    const [timeRange, setTimeRange] = useState<CategoryTotalTimeRange>("1m");
+    const [startDate, setStartDate] = useState(() => computeStartDate(timeRange));
     const getCategoryTotals = useGetCategoryTotals(
-        { accountIds: selectedIds, startDate: startDateStr },
+        { accountIds: selectedIds, startDate: startDate || undefined },
         { placeholderData: (prev) => prev }
     );
-
-    const chartConfig: ChartConfig = buildChartConfig(
-        getCategoryTotals.data,
-        (entry) => entry.categoryId,
-        (entry) => entry.categoryName
-    );
-
     const chartData = getCategoryTotals.data?.map((entry) => {
         return {
-            category: String(entry.categoryId),
+            category: String(entry.categoryName),
             amount: entry.totalAmount
         }
-    })
+    }) as CategoryTotalsChartData[];
     const expenseTotal = chartData?.reduce((acc, curr) => acc + Number(curr.amount), 0).toFixed(2);
 
-    const tabs = [
-        { value: "1m", label: "1M" },
-        { value: "6m", label: "6M" },
-        { value: "1y", label: "1Y" },
-        { value: "max", label: "Max" },
-    ];
-
-    const handleTabChange = (value: string) => {
-        setSelectedTab(value);
-        switch (value) {
-            case "1m":
-                setStartDate(subMonths(today, 1))
-                break
-            case "6m":
-                setStartDate(subMonths(today, 6))
-                break
-            case "1y":
-                setStartDate(subYears(today, 1))
-                break
-            case "max":
-                setStartDate(new Date(1970, 0, 1))
-                break
-        }
-    }
+    useEffect(() => {
+        setStartDate(computeStartDate(timeRange));
+    }, [timeRange]);
 
     return (
-        <Card className="w-full">
+        <Card className="@container/card">
             <CardHeader>
-                <CardTitle>Expenses structure</CardTitle>
+                <CardTitle>Expense Totals Per Category</CardTitle>
+                <CardDescription>
+                    <span className="hidden @[540px]/card:block">
+                        {timeRange === "1m" && "Totals per category over the last month"}
+                        {timeRange === "6m" && "Totals per categor over the last 6 months"}
+                        {timeRange === "1y" && "Totals per categor over the last year"}
+                        {timeRange === "max" && "Totals per categor since inception"}
+                    </span>
+                    <span className="@[540px]/card:hidden">
+                        {timeRange === "1m" && "Last month"}
+                        {timeRange === "6m" && "Last 6 months"}
+                        {timeRange === "1y" && "Last year"}
+                        {timeRange === "max" && "Since inception"}
+                    </span>
+                </CardDescription>
+                <CardAction>
+                    <ToggleGroup
+                        type="single"
+                        value={timeRange}
+                        onValueChange={(value) => setTimeRange(value as CategoryTotalTimeRange)}
+                        variant="outline"
+                        className="hidden *:data-[slot=toggle-group-item]:!px-6 @[767px]/card:flex"
+                    >
+                        <ToggleGroupItem value="1m">Last month</ToggleGroupItem>
+                        <ToggleGroupItem value="6m">Last 6 months</ToggleGroupItem>
+                        <ToggleGroupItem value="1y">Last year</ToggleGroupItem>
+                        <ToggleGroupItem value="max">Max</ToggleGroupItem>
+                    </ToggleGroup>
+                </CardAction>
             </CardHeader>
             <CardContent>
-                <Tabs value={selectedTab} onValueChange={handleTabChange}>
-                    <TabsList>
-                        {tabs.map((tab) => (
-                            <TabsTrigger key={tab.value} value={tab.value}>
-                                {tab.label}
-                            </TabsTrigger>
-                        ))}
-                    </TabsList>
-
-                    {tabs.map((tab) => (
-                        <TabsContent key={tab.value} value={tab.value} className="min-h-[300px]">
-                            {getCategoryTotals.data && (
-                                <CategoryTotalChart
-                                    chartConfig={chartConfig}
-                                    chartData={chartData}
-                                    expenseTotal={Number(expenseTotal) || 0}
-                                />
-                            ) : getCategoryTotals.isPending ? (
-                                <div className="flex justify-center">
-                                    <Loader2Icon className="animate-spin" />
-                                </div>
-                            ) : (
-                                <div className="flex flex-col justify-center items-center">
-                                    <span className="text-sm text-muted-foreground">Nothing to show</span>
-                                </div>
-                            )}
-                            {/* {getCategoryTotals.isPending ? (
-                                <div className="flex justify-center">
-                                    <Loader2Icon className="animate-spin" />
-                                </div>
-                            ) : getCategoryTotals.isSuccess && chartData && chartData.length > 0 ? (
-                                <CategoryTotalChart
-                                    chartConfig={chartConfig}
-                                    chartData={chartData}
-                                    expenseTotal={Number(expenseTotal) || 0}
-                                />
-                            ) : (
-                                <div className="flex flex-col justify-center items-center">
-                                    <span className="text-sm text-muted-foreground">Nothing to show</span>
-                                </div>
-                            )} */}
-                        </TabsContent>
-                    ))}
-                </Tabs>
-            </CardContent >
-        </Card >
+                {getCategoryTotals.data && getCategoryTotals.data.length > 0 ? (
+                    <CategoryTotalChart
+                        chartData={chartData}
+                        expenseTotal={Number(expenseTotal) || 0}
+                    />
+                ) : getCategoryTotals.data && getCategoryTotals.data.length <= 0 ? (
+                    <div className="flex flex-col justify-center items-center">
+                        <span className="text-sm text-muted-foreground">Nothing to show</span>
+                    </div>
+                ) : (
+                    <div className="flex justify-center">
+                        <Loader2Icon className="animate-spin" />
+                    </div>
+                )}
+            </CardContent>
+        </Card>
     )
+}
+
+const computeStartDate = (timeRange: string) => {
+    const today = new Date();
+
+    switch (timeRange) {
+        case "1m":
+            return format(subMonths(today, 1), "yyyy-MM-dd");
+        case "6m":
+            return format(subMonths(today, 6), "yyyy-MM-dd");
+        case "1y":
+            return format(subYears(today, 1), "yyyy-MM-dd");
+        case "max":
+        default:
+            return null;
+    }
 }

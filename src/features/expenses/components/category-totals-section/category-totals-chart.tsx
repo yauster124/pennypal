@@ -1,21 +1,39 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Cell, Label, Pie, PieChart } from "recharts";
 import { CategoryTotalsChartLabel } from "./category-totals-chart-label";
+import { chartColours } from "@/lib/generate-chart-config";
 
-type ChartData = {
+export type CategoryTotalsChartData = {
     category: string;
     amount: string;
+}
+const generateChartConfig = (
+    data: CategoryTotalsChartData[]
+): ChartConfig => {
+    if (!data) {
+        return {};
+    }
+
+    return data.reduce((acc, item, idx) => {
+        const key = String(item.category);
+        acc[key] = {
+            label: key,
+            color: chartColours[idx % chartColours.length]
+        }
+
+        return acc;
+    }, {} as ChartConfig)
 }
 
 export const CategoryTotalChart = ({
     chartData,
-    chartConfig,
     expenseTotal
 }: {
-    chartData: ChartData[],
-    chartConfig: ChartConfig
+    chartData: CategoryTotalsChartData[],
     expenseTotal: number
 }) => {
+    const chartConfig = generateChartConfig(chartData);
+
     return (
         <ChartContainer config={chartConfig}>
             <PieChart>
@@ -51,23 +69,6 @@ export const CategoryTotalChart = ({
                         content={({ viewBox }) => {
                             if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                                 return (
-                                    // <text
-                                    //     x={viewBox.cx}
-                                    //     y={viewBox.cy}
-                                    //     textAnchor="middle"
-                                    //     dominantBaseline="middle"
-                                    // >
-                                    //     <tspan
-                                    //         x={viewBox.cx}
-                                    //         y={viewBox.cy}
-                                    //         className="fill-foreground text-2xl font-semibold"
-                                    //     >
-                                    //         {expenseTotal.toLocaleString("en-GB", {
-                                    //             style: "currency",
-                                    //             currency: "GBP",
-                                    //         })}
-                                    //     </tspan>
-                                    // </text>
                                     <CategoryTotalsChartLabel amount={expenseTotal} viewBox={viewBox} />
                                 )
                             }
