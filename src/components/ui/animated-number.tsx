@@ -1,15 +1,19 @@
 import { cn } from "@/lib/utils";
-import NumberFlow from "@number-flow/react";
+import NumberFlow, { Format } from "@number-flow/react";
 import { useState, useEffect } from "react";
 
 export default function AnimatedNumber({
     target,
     className,
-    format = true
+    format = true,
+    dynamicColour = true,
+    padZero = false
 }: {
     target: number,
     className?: string,
-    format?: boolean
+    format?: boolean,
+    dynamicColour?: boolean,
+    padZero?: boolean
 }) {
     const [value, setValue] = useState(0);
 
@@ -17,14 +21,28 @@ export default function AnimatedNumber({
         setValue(target);
     }, [target]);
 
+    const formatterOptions: Format = format
+        ? {
+            style: "currency",
+            currency: "GBP",
+            trailingZeroDisplay: "stripIfInteger",
+            signDisplay: "always",
+        }
+        : {}
+
+    if (padZero) {
+        formatterOptions.minimumIntegerDigits = 2
+    }
+
     return (
         <NumberFlow
             value={value}
-            format={format ? { style: "currency", currency: "GBP", trailingZeroDisplay: "stripIfInteger", signDisplay: "always" } : {}}
+            format={formatterOptions}
             spinTiming={{ duration: 1000 }}
             className={cn(
                 "text-2xl",
-                value < 0 ? "text-destructive" : "text-constructive",
+                value < 0 && dynamicColour && "text-destructive",
+                value > 0 && dynamicColour && "text-constructive",
                 className
             )}
         />

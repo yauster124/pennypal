@@ -1,6 +1,6 @@
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { chartColours } from "@/lib/generate-chart-config"
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
 import { AccountValueChartData } from "./account-value-types"
 
 const generateChartConfig = (chartData: AccountValueChartData): ChartConfig => {
@@ -24,14 +24,11 @@ export const AccountValuesChart = ({
     const chartConfig = generateChartConfig(chartData);
 
     return (
-        <ChartContainer config={chartConfig} className="min-w-[400px] min-h-[300px]">
+        <ChartContainer config={chartConfig}>
             <LineChart
                 accessibilityLayer
                 data={chartData}
-                margin={{
-                    left: 12,
-                    right: 12,
-                }}
+                margin={{ top: 0, right: 0, bottom: 0, left: -15 }}
             >
                 <CartesianGrid vertical={false} />
                 <XAxis
@@ -47,6 +44,11 @@ export const AccountValuesChart = ({
                             day: "numeric",
                         });
                     }}
+                />
+                <YAxis
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(value) => (value === 0 ? "" : value)}
                 />
                 <ChartTooltip
                     cursor={false}

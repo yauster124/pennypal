@@ -1,42 +1,46 @@
-import { cn } from "@/lib/utils";
 import { Account } from "@/types/api";
-import { useAccountStore } from "../store/account-store";
+import { Card, CardAction, CardDescription, CardHeader } from "@/components/ui/card";
+import { NumberDisplay } from "@/components/ui/number-display";
+import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 export const AccountCard = ({
-    account
+    account,
+    percentage
 }: {
     account: Account
+    percentage: string
 }) => {
-    const toggle = useAccountStore((s) => s.toggle);
-    const selectedIds = useAccountStore((s) => s.selectedIds);
-    const active = selectedIds.includes(String(account.id));
+    const increasing = Number(percentage) > 0;
 
     return (
-        <button
-            onClick={() => {
-                toggle(account.id);
-            }}
-            className={cn(
-                "w-full text-left px-4 py-2 rounded-xl transition",
-                active ? "bg-primary border border-primary text-primary-foreground" : "border hover:bg-muted"
-            )}
-        >
-            <div className="flex flex-col items-start">
-                <span
-                    className={cn("text-sm", {
-                        "text-primary-foreground/80": active,
-                        "text-muted-foreground": !active,
-                    })}
-                >
-                    {account.name}
-                </span>
-                <span className="font-semibold">
-                    {new Intl.NumberFormat("en-GB", {
-                        style: "currency",
-                        currency: "GBP",
-                    }).format(Number(account.balance))}
-                </span>
-            </div>
-        </button>
-    );
+        <Card className="@container/card">
+            <CardHeader>
+                <CardDescription>{account.name}</CardDescription>
+                    <NumberDisplay
+                        amount={account.balance}
+                        animate={true}
+                        dynamicColour={false}
+                        format={false}
+                    />
+                <CardAction>
+                    <Badge variant="outline">
+                        {increasing || Number(percentage) === 0 ? (
+                            <TrendingUpIcon />
+                        ) : (
+                            <TrendingDownIcon />
+                        )}
+                        <span className={cn(
+                            increasing && "text-constructive",
+                            !increasing && Number(percentage) !== 0 && "text-destructive"
+                        )}>
+                            {Number(percentage) > 0 ? "+" : ""}
+                            {percentage}%
+                        </span>
+                    </Badge>
+                </CardAction>
+            </CardHeader>
+        </Card>
+    )
 }

@@ -31,6 +31,8 @@ export interface AccountValuePoint {
 export interface User {
     id: string
     username: string
+    alias: string
+    profilePictureUrl: string
 }
 
 export type AuthResponse = {

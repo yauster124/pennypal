@@ -6,11 +6,15 @@ export type NumberDisplaySize = "small" | "large";
 export const NumberDisplay = ({
     amount,
     variant = "small",
-    animate = false
+    animate = false,
+    dynamicColour = true,
+    format = true
 }: {
     amount: string
     variant?: NumberDisplaySize,
-    animate?: boolean
+    animate?: boolean,
+    dynamicColour?: boolean,
+    format?: boolean
 }) => {
     const formattedAmount = Math.abs(Number(amount)).toFixed(2);
 
@@ -19,11 +23,11 @@ export const NumberDisplay = ({
 
     return (
         <div className={cn(
-            Number(amount) > 0 ? "text-constructive" : "",
+            Number(amount) > 0 && dynamicColour ? "text-constructive" : "",
             "flex items-end"
         )}>
             <span className={cn(variant === "large" && "text-xl")}>
-                {Number(amount) > 0 ? "+" : ""}
+                {format && Number(amount) > 0 ? "+" : ""}
                 £
             </span>
             {animate ? (
@@ -31,12 +35,15 @@ export const NumberDisplay = ({
                     <AnimatedNumber
                         target={Number(pounds)}
                         format={false}
+                        dynamicColour={false}
                         className="text-3xl translate-y-[4px]"
                     />
                     <span className="text-xl">.</span>
                     <AnimatedNumber
                         target={Number(pence)}
                         format={false}
+                        dynamicColour={false}
+                        padZero={true}
                         className="text-xl"
                     />
                 </>

@@ -39,18 +39,6 @@ export const RecentExpensesSection = () => {
                                 <ExpenseRecord key={expense.id} expense={expense} />
                             )
                         })}
-                        <CreateExpense
-                            trigger={
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="w-full"
-                                >
-                                    <PlusIcon />
-                                    <span className="font-normal text-muted-foreground">Add another expense</span>
-                                </Button>
-                            }
-                        />
                     </div>
                 )}
             </CardContent>

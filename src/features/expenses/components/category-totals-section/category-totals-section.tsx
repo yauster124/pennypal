@@ -32,7 +32,7 @@ export const CategoryTotalsSection = () => {
     }, [timeRange]);
 
     return (
-        <Card className="@container/card">
+        <Card className="@container/card flex-1">
             <CardHeader>
                 <CardTitle>Expense Totals Per Category</CardTitle>
                 <CardDescription>

@@ -7,6 +7,8 @@ import { cn, groupByMonthAndDay } from "@/lib/utils";
 import { useSearchFiltersStore } from "../store/search-filters-store";
 import { format } from "date-fns";
 import { ExpenseListRecord } from "./expense-list-record";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NumberDisplay } from "@/components/ui/number-display";
 
 export const ExpensesList = () => {
     const searchQuery = useSearchFiltersStore((s) => s.searchQuery);
@@ -64,21 +66,18 @@ export const ExpensesList = () => {
     }
 
     return (
-        <>
+        <div className="flex flex-col gap-4">
             {Object.entries(groupedExpenses).map(([month, expensesByDay], index) => (
-                <div key={index}>
-                    <div className="flex justify-between">
-                        <h3 className="text-sm text-muted-foreground font-semibold mb-2 ml-2 mt-2">{month}</h3>
-                        <h3 className="text-sm text-muted-foreground font-semibold mb-2 ml-2 mt-2">{expensesByDay.total.toLocaleString("en-GB", {
-                            style: "currency",
-                            currency: "GBP",
-                        })}</h3>
-                    </div>
-                    <div className="rounded-lg bg-card">
+                <Card key={index}>
+                    <CardHeader>
+                        <CardTitle>{month}</CardTitle>
+                        <NumberDisplay amount={expensesByDay.total.toString()} animate={true} />
+                    </CardHeader>
+                    <CardContent>
                         {Object.entries(expensesByDay.expenses).map(([day, expenses], index) => (
                             <div key={index} className={cn(
                                 "p-4",
-                                index < Object.entries(expensesByDay.expenses).length ? "border-b" : ""
+                                index < Object.entries(expensesByDay.expenses).length - 1 ? "border-b" : ""
                             )}>
                                 <div className="flex justify-between">
                                     <h3 className="text-sm text-muted-foreground font-semibold mb-6">{day}</h3>
@@ -97,8 +96,8 @@ export const ExpensesList = () => {
                                 </div>
                             </div>
                         ))}
-                    </div>
-                </div>
+                    </CardContent>
+                </Card>
             ))}
             <div ref={lastExpenseRef} />
             {expensesQuery.isFetchingNextPage && (
@@ -113,6 +112,6 @@ export const ExpensesList = () => {
                     </span>
                 </div>
             )}
-        </>
+        </div>
     )
 }

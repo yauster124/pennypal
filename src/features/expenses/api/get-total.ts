@@ -1,5 +1,5 @@
 import { api } from "@/lib/api-client"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, UseQueryOptions, UseQueryResult } from "@tanstack/react-query"
 
 export type ExpenseTotal = {
     total: string
@@ -26,17 +26,23 @@ export const getTotal = ({
     )
 }
 
-export const useGetTotal = ({
-    accountIds,
-    startDate,
-    endDate
-}: {
-    accountIds: string[],
-    startDate?: string,
-    endDate?: string
-}) => {
+export const useGetTotal = (
+    {
+        accountIds,
+        startDate,
+        endDate
+    }: {
+        accountIds: string[],
+        startDate?: string,
+        endDate?: string
+    },
+    options?: Omit<
+        UseQueryOptions<ExpenseTotal, Error>,
+        "queryKey" | "queryFn"
+    >): UseQueryResult<ExpenseTotal, Error> => {
     return useQuery<ExpenseTotal>({
         queryKey: ["total", accountIds, startDate, endDate],
-        queryFn: () => getTotal({ accountIds, startDate, endDate })
+        queryFn: () => getTotal({ accountIds, startDate, endDate }),
+        ...options
     })
 }
