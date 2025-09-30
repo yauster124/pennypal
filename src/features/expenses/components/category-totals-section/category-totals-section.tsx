@@ -34,13 +34,13 @@ export const CategoryTotalsSection = () => {
     return (
         <Card className="@container/card flex-1">
             <CardHeader>
-                <CardTitle>Expense Totals Per Category</CardTitle>
+                <CardTitle>Expenses Structure</CardTitle>
                 <CardDescription>
                     <span className="hidden @[540px]/card:block">
                         {timeRange === "1m" && "Totals per category over the last month"}
-                        {timeRange === "6m" && "Totals per categor over the last 6 months"}
-                        {timeRange === "1y" && "Totals per categor over the last year"}
-                        {timeRange === "max" && "Totals per categor since inception"}
+                        {timeRange === "6m" && "Totals per category over the last 6 months"}
+                        {timeRange === "1y" && "Totals per category over the last year"}
+                        {timeRange === "max" && "Totals per category since inception"}
                     </span>
                     <span className="@[540px]/card:hidden">
                         {timeRange === "1m" && "Last month"}
@@ -55,11 +55,11 @@ export const CategoryTotalsSection = () => {
                         value={timeRange}
                         onValueChange={(value) => setTimeRange(value as CategoryTotalTimeRange)}
                         variant="outline"
-                        className="hidden *:data-[slot=toggle-group-item]:!px-6 @[767px]/card:flex"
+                        className="hidden *:data-[slot=toggle-group-item]:!px-6 @[200px]/card:flex"
                     >
-                        <ToggleGroupItem value="1m">Last month</ToggleGroupItem>
-                        <ToggleGroupItem value="6m">Last 6 months</ToggleGroupItem>
-                        <ToggleGroupItem value="1y">Last year</ToggleGroupItem>
+                        <ToggleGroupItem value="1m">1M</ToggleGroupItem>
+                        <ToggleGroupItem value="6m">6M</ToggleGroupItem>
+                        <ToggleGroupItem value="1y">1Y</ToggleGroupItem>
                         <ToggleGroupItem value="max">Max</ToggleGroupItem>
                     </ToggleGroup>
                 </CardAction>

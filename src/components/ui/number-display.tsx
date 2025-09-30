@@ -26,7 +26,10 @@ export const NumberDisplay = ({
             Number(amount) > 0 && dynamicColour ? "text-constructive" : "",
             "flex items-end"
         )}>
-            <span className={cn(variant === "large" && "text-xl")}>
+            <span className={cn(
+                "translate-y-[-1px] mr-[1px]",
+                variant === "large" && "text-xl"
+            )}>
                 {format && Number(amount) > 0 ? "+" : ""}
                 £
             </span>
@@ -36,7 +39,11 @@ export const NumberDisplay = ({
                         target={Number(pounds)}
                         format={false}
                         dynamicColour={false}
-                        className="text-3xl translate-y-[4px]"
+                        className={cn(
+                            "translate-y-[3px]",
+                            variant === "small" && "text-3xl",
+                            variant === "large" && "text-5xl"
+                        )}
                     />
                     <span className="text-xl">.</span>
                     <AnimatedNumber
@@ -44,7 +51,10 @@ export const NumberDisplay = ({
                         format={false}
                         dynamicColour={false}
                         padZero={true}
-                        className="text-xl"
+                        className={cn(
+                            variant === "small" && "text-xl",
+                            variant === "large" && "text-3xl"
+                        )}
                     />
                 </>
             ) : (

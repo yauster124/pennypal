@@ -35,76 +35,79 @@ export const AccountListSection = () => {
 
     return (
         <div className="w-full flex gap-4">
-            <div className="w-1/4">
-            {getAccountValues.data && (
-                <Card>
-                    <CardHeader>
-                        <CardDescription>Total</CardDescription>
-                        <NumberDisplay
-                            amount={getAccountValues.data.at(-1)?.["Total"] ?? "0"}
-                            animate={true}
-                            dynamicColour={false}
-                            format={false}
-                        />
-                        <CardAction>
-                            <Badge variant="outline">
-                                {increasing || Number(totalPercentage) === 0 ? (
-                                    <TrendingUpIcon />
-                                ) : (
-                                    <TrendingDownIcon />
-                                )}
-                                <span className={cn(
-                                    increasing && "text-constructive",
-                                    !increasing && Number(totalPercentage) !== 0 && "text-destructive"
-                                )}>
-                                    {Number(totalPercentage) > 0 ? "+" : ""}
-                                    {totalPercentage}%
-                                </span>
-                            </Badge>
-                        </CardAction>
-                    </CardHeader>
-                </Card>
-            )}
-            </div>
-            <div className="w-3/4">
-            <Carousel
-                opts={{
-                    align: "start",
-                    loop: true,
-                }}
-                className="mx-12"
-            >
-                <CarouselContent>
-                    {getAccounts.isPending || getAccountValues.isPending ? (
-                        <div className="flex justify-between gap-2">
-                            {Array.from({ length: 3 }).map((_, i) => (
-                                <AccountCardSkeleton key={i} />
-                            ))}
-                        </div>
-                    ) : (
-                        <>
-                            {getAccounts.data?.map((account) => {
-                                const accountValue = getAccountValues.data?.at(0)?.[account.name] ?? "0";
-                                const percentage = (((Number(account.balance) - Number(accountValue)) / Number(accountValue)) * 100).toFixed(2);
+            {/* <div className="w-1/4">
+                {getAccountValues.data && (
+                    <Card>
+                        <CardHeader>
+                            <CardDescription>Total</CardDescription>
+                            <NumberDisplay
+                                amount={getAccountValues.data.at(-1)?.["Total"] ?? "0"}
+                                animate={true}
+                                dynamicColour={false}
+                                format={false}
+                            />
+                            <CardAction>
+                                <Badge variant="outline">
+                                    {increasing || Number(totalPercentage) === 0 ? (
+                                        <TrendingUpIcon />
+                                    ) : (
+                                        <TrendingDownIcon />
+                                    )}
+                                    <span className={cn(
+                                        increasing && "text-constructive",
+                                        !increasing && Number(totalPercentage) !== 0 && "text-destructive"
+                                    )}>
+                                        {Number(totalPercentage) > 0 ? "+" : ""}
+                                        {totalPercentage}%
+                                    </span>
+                                    <span className="font-normal text-muted-foreground">
+                                        from last month
+                                    </span>
+                                </Badge>
+                            </CardAction>
+                        </CardHeader>
+                    </Card>
+                )}
+            </div> */}
+            <div className="w-1/1">
+                <Carousel
+                    opts={{
+                        align: "start",
+                        loop: true,
+                    }}
+                    className="mx-12"
+                >
+                    <CarouselContent>
+                        {getAccounts.isPending || getAccountValues.isPending ? (
+                            <div className="flex justify-between gap-2">
+                                {Array.from({ length: 3 }).map((_, i) => (
+                                    <AccountCardSkeleton key={i} />
+                                ))}
+                            </div>
+                        ) : (
+                            <>
+                                {getAccounts.data?.map((account) => {
+                                    const accountValue = getAccountValues.data?.at(0)?.[account.name] ?? "0";
+                                    const percentage = (((Number(account.balance) - Number(accountValue)) / Number(accountValue)) * 100).toFixed(2);
 
-                                return (
-                                    <CarouselItem
-                                        key={account.id}
-                                        className="lg:basis-1/2 xl:basis-1/3"
-                                    >
-                                        <AccountCard
-                                            account={account}
-                                            percentage={percentage}
-                                        />
-                                    </CarouselItem>
-                                )
-                            })}
-                        </>
-                    )}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-            </Carousel>
+                                    return (
+                                        <CarouselItem
+                                            key={account.id}
+                                            className="lg:basis-1/2 xl:basis-1/3"
+                                        >
+                                            <AccountCard
+                                                account={account}
+                                                percentage={percentage}
+                                            />
+                                        </CarouselItem>
+                                    )
+                                })}
+                            </>
+                        )}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                </Carousel>
             </div>
         </div>
     );

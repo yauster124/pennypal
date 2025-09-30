@@ -70,7 +70,7 @@ export const ExpenseTotalSection = () => {
             <CardContent>
                 {getAccountValues.data && getTotalQuery.data ? (
                     <div className="flex flex-col gap-4">
-                        <NumberDisplay amount={getTotalQuery.data.total} variant="large" animate={true} />
+                        <NumberDisplay amount={getTotalQuery.data.total} animate={true} />
                         <AccountValuesChart chartData={getAccountValues.data} />
                     </div>
                 ) : (

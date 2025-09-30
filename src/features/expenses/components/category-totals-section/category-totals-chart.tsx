@@ -1,5 +1,5 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Cell, Label, Pie, PieChart } from "recharts";
+import { Cell, Label, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { CategoryTotalsChartLabel } from "./category-totals-chart-label";
 import { chartColours } from "@/lib/generate-chart-config";
 
@@ -35,53 +35,69 @@ export const CategoryTotalChart = ({
     const chartConfig = generateChartConfig(chartData);
 
     return (
-        <ChartContainer config={chartConfig}>
-            <PieChart>
-                <ChartTooltip
-                    cursor={false}
-                    content={
-                        <ChartTooltipContent
-                            hideLabel={false}
-                            valueFormatter={(value) => value.toLocaleString("en-GB", {
-                                style: "currency",
-                                currency: "GBP",
-                            })}
-                        />}
-                />
-                <Pie
-                    data={chartData}
-                    dataKey="amount"
-                    nameKey="category"
-                    innerRadius={90}
-                    strokeWidth={5}
-                    outerRadius={130}
-                >
-                    {chartData?.map((entry) => {
-                        const config = chartConfig[entry.category]
-                        return (
-                            <Cell
-                                key={`cell-${entry.category}`}
-                                fill={config?.color ?? "#ccc"}
-                            />
-                        )
-                    })}
-                    <Label
-                        content={({ viewBox }) => {
-                            if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                                return (
-                                    <CategoryTotalsChartLabel amount={expenseTotal} viewBox={viewBox} />
-                                )
-                            }
-                        }}
+        <ChartContainer config={chartConfig} className="w-full h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                    <ChartTooltip
+                        cursor={false}
+                        content={
+                            <ChartTooltipContent
+                                hideLabel={false}
+                                valueFormatter={(value) => value.toLocaleString("en-GB", {
+                                    style: "currency",
+                                    currency: "GBP",
+                                })}
+                            />}
                     />
-                </Pie>
-                <ChartLegend
-                    content={<ChartLegendContent nameKey="category" />}
-                    verticalAlign="bottom"
-                    align="center"
-                    layout="horizontal"
-                />
-            </PieChart>
+                    <Pie
+                        data={chartData}
+                        dataKey="amount"
+                        nameKey="category"
+                        innerRadius="70%"
+                        outerRadius="100%"
+                    >
+                        {chartData?.map((entry) => {
+                            const config = chartConfig[entry.category]
+                            return (
+                                <Cell
+                                    key={`cell-${entry.category}`}
+                                    fill={config?.color ?? "#ccc"}
+                                />
+                            )
+                        })}
+                        <Label
+                            content={({ viewBox }) => {
+                                if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                                    return (
+                                        <CategoryTotalsChartLabel amount={expenseTotal} viewBox={viewBox} />
+                                    )
+                                }
+                            }}
+                        />
+                    </Pie>
+                    <ChartLegend
+                        content={
+                            <div className="mt-6 flex flex-wrap justify-center gap-2">
+                                {chartData.map((entry) => {
+                                    const config = chartConfig[entry.category];
+                                    return (
+                                        <div
+                                            key={entry.category}
+                                            className="flex items-center gap-1 text-sm px-2 py-1 rounded-md bg-muted/50"
+                                        >
+                                            <div
+                                                className="w-3 h-3 rounded-full"
+                                                style={{ backgroundColor: config?.color ?? "#ccc" }}
+                                            />
+                                            <span>{entry.category}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        }
+                    />
+                </PieChart>
+            </ResponsiveContainer>
         </ChartContainer>
     )
 }

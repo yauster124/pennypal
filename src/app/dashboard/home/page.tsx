@@ -1,6 +1,11 @@
+"use client"
+
 import { AccountListSection } from "@/features/accounts/components/account-list-section"
+import { AccountTotalCard } from "@/features/accounts/components/account-total-card";
 import { CategoryTotalsSection } from "@/features/expenses/components/category-totals-section/category-totals-section";
 import { ExpenseTotalSection } from "@/features/expenses/components/expense-total-section/expense-total-section";
+import { MonthlyIncomeSection } from "@/features/expenses/components/monthly-income-section/monthly-income-section";
+import { MonthlyTotalsSection } from "@/features/expenses/components/monthly-totals-section/monthly-totals-section";
 import { RecentExpensesSection } from "@/features/expenses/components/recent-expenses-section/recent-expenses-section";
 
 const HomePage = () => {
@@ -10,15 +15,24 @@ const HomePage = () => {
                 <div className="flex justify-center px-4 lg:px-6">
                     <AccountListSection />
                 </div>
-                <div className="px-4 lg:px-6">
-                    <RecentExpensesSection />
+                <div className="flex flex-col gap-4 px-4 lg:px-6 2xl:flex-row items-stretch">
+                    <div className="flex flex-3">
+                        <ExpenseTotalSection />
+                    </div>
+                    <div className="flex flex-col flex-1 gap-4">
+                        <AccountTotalCard className="h-full" />
+                        <RecentExpensesSection />
+                    </div>
                 </div>
                 <div className="flex flex-col gap-4 px-4 lg:px-6 2xl:flex-row items-stretch">
                     <div className="flex flex-1">
-                        <ExpenseTotalSection />
+                        <CategoryTotalsSection />
                     </div>
                     <div className="flex flex-1">
-                        <CategoryTotalsSection />
+                        <MonthlyTotalsSection />
+                    </div>
+                    <div className="flex flex-1">
+                        <MonthlyIncomeSection />
                     </div>
                 </div>
             </div>

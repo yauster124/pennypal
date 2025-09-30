@@ -24,7 +24,7 @@ export const AccountValuesChart = ({
     const chartConfig = generateChartConfig(chartData);
 
     return (
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="max-h-[450px]">
             <LineChart
                 accessibilityLayer
                 data={chartData}

@@ -38,6 +38,9 @@ export const AccountCard = ({
                             {Number(percentage) > 0 ? "+" : ""}
                             {percentage}%
                         </span>
+                        <span className="font-normal text-muted-foreground">
+                            from last month
+                        </span>
                     </Badge>
                 </CardAction>
             </CardHeader>
