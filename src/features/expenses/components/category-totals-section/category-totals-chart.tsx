@@ -1,5 +1,5 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Cell, Label, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Cell, Label, LegendProps, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { CategoryTotalsChartLabel } from "./category-totals-chart-label";
 import { chartColours } from "@/lib/generate-chart-config";
 
@@ -77,27 +77,45 @@ export const CategoryTotalChart = ({
                     </Pie>
                     <ChartLegend
                         content={
-                            <div className="mt-6 flex flex-wrap justify-center gap-2">
-                                {chartData.map((entry) => {
-                                    const config = chartConfig[entry.category];
-                                    return (
-                                        <div
-                                            key={entry.category}
-                                            className="flex items-center gap-1 text-sm px-2 py-1 rounded-md bg-muted/50"
-                                        >
-                                            <div
-                                                className="w-3 h-3 rounded-full"
-                                                style={{ backgroundColor: config?.color ?? "#ccc" }}
-                                            />
-                                            <span>{entry.category}</span>
-                                        </div>
-                                    );
-                                })}
-                            </div>
+                            <CustomChartLegendContent chartData={chartData} chartConfig={chartConfig} />
                         }
                     />
                 </PieChart>
             </ResponsiveContainer>
         </ChartContainer>
+    )
+}
+
+const CustomChartLegendContent = ({
+    className,
+    hideIcon = false,
+    payload,
+    verticalAlign = "bottom",
+    nameKey,
+    chartData,
+    chartConfig
+}: React.ComponentProps<"div"> &
+    Pick<LegendProps, "payload" | "verticalAlign"> & {
+        hideIcon?: boolean
+        nameKey?: string
+    } & { chartData: CategoryTotalsChartData[], chartConfig: ChartConfig }) => {
+    return (
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+            {chartData.map((entry) => {
+                const config = chartConfig[entry.category];
+                return (
+                    <div
+                        key={entry.category}
+                        className="flex items-center gap-1 text-sm px-2 py-1 rounded-md bg-muted/50"
+                    >
+                        <div
+                            className="w-3 h-3 rounded-full"
+                            style={{ backgroundColor: config?.color ?? "#ccc" }}
+                        />
+                        <span>{entry.category}</span>
+                    </div>
+                );
+            })}
+        </div>
     )
 }
