@@ -35,10 +35,11 @@ export const AccountTotalCard = ({
                             />
                             <CardAction>
                                 <Badge variant="outline">
-                                    {increasing || Number(totalPercentage) === 0 ? (
-                                        <TrendingUpIcon />
-                                    ) : (
-                                        <TrendingDownIcon />
+                                    {increasing && (
+                                        <TrendingUpIcon className={"stroke-constructive"} />
+                                    )}
+                                    {!increasing && Number(totalPercentage) !== 0 && (
+                                        <TrendingDownIcon className="stroke-destructive" />
                                     )}
                                     <span className={cn(
                                         increasing && "text-constructive",

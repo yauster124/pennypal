@@ -29,7 +29,7 @@ export const MonthlyTotalsChart = ({
     type: string
 }) => {
     const chartConfig = generateChartConfig(chartData);
-    const fill = type === "income" ? "var(--chart-2)" : "var(--chart-7)";
+    const fill = type === "income" ? "var(--constructive-light)" : "var(--destructive-light)";
 
     return (
         <ChartContainer config={chartConfig} className="w-full h-[400px]">
