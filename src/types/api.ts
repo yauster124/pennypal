@@ -9,6 +9,7 @@ export interface Expense {
 
 export type CategoryType = "INCOME" | "EXPENSE";
 export type ExpenseType = "INCOME" | "EXPENSE" | "TRANSFER";
+export type BudgetType = "MONTHLY" | "YEARLY";
 
 export interface Category {
     id: string
@@ -33,6 +34,14 @@ export interface User {
     username: string
     alias: string
     profilePictureUrl: string
+}
+
+export interface Budget {
+    id: string
+    amount: string
+    spent: string
+    type: BudgetType
+    category?: Category
 }
 
 export type AuthResponse = {

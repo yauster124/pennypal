@@ -10,12 +10,12 @@ import { RecentExpensesSection } from "@/features/expenses/components/recent-exp
 
 const HomePage = () => {
     return (
-        <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4">
-                <div className="flex justify-center px-4 lg:px-6">
+        <div className="@container/main flex flex-1 flex-col gap-4 p-4">
+            <div className="flex flex-col gap-4">
+                <div className="flex justify-center">
                     <AccountListSection />
                 </div>
-                <div className="flex flex-col gap-4 px-4 lg:px-6 2xl:flex-row items-stretch">
+                <div className="flex flex-col gap-4 2xl:flex-row items-stretch">
                     <div className="flex flex-3">
                         <ExpenseTotalSection />
                     </div>
@@ -24,7 +24,7 @@ const HomePage = () => {
                         <RecentExpensesSection />
                     </div>
                 </div>
-                <div className="flex flex-col gap-4 px-4 lg:px-6 2xl:flex-row items-stretch">
+                <div className="flex flex-col gap-4 2xl:flex-row items-stretch">
                     <div className="flex flex-1">
                         <CategoryTotalsSection />
                     </div>

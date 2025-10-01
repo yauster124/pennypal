@@ -13,8 +13,8 @@ import { useGetCategories } from "@/features/categories/api/get-categories";
 import { CategoryCombobox } from "@/features/categories/components/category-combobox";
 import { Combobox } from "@/components/ui/combobox";
 import { useGetAccounts } from "@/features/accounts/api/get-accounts";
-import { CurrencyInput } from "@/components/ui/currency-input";
 import { ExpenseType } from "@/types/api";
+import { InputBase, InputBaseAdornment, InputBaseControl, InputBaseInput } from "@/components/ui/input-base";
 
 export const CreateExpenseForm = ({
     expenseType
@@ -71,12 +71,19 @@ export const CreateExpenseForm = ({
                 <FormField
                     control={form.control}
                     name="amount"
-                    render={({ field }) => (
+                    render={({ field, fieldState }) => (
                         <FormItem>
                             <FormLabel>Amount</FormLabel>
-                            <FormControl>
-                                <CurrencyInput {...field} />
-                            </FormControl>
+                            <InputBase error={Boolean(fieldState.error)}>
+                                <InputBaseAdornment>
+                                    £
+                                </InputBaseAdornment>
+                                <InputBaseControl>
+                                    <FormControl>
+                                        <InputBaseInput {...field} />
+                                    </FormControl>
+                                </InputBaseControl>
+                            </InputBase>
                             <FormMessage />
                         </FormItem>
                     )}

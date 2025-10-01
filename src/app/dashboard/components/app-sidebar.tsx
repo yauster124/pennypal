@@ -25,6 +25,11 @@ export const AppSidebar = ({ ...props }: React.ComponentProps<typeof Sidebar>) =
             url: "/dashboard/expenses",
             icon: BanknoteArrowDownIcon
         },
+        {
+            title: "Budgeting",
+            url: "/dashboard/budgeting",
+            icon: PiggyBankIcon
+        }
     ]
 
     const navBottom = [

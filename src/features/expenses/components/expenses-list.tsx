@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import { ExpenseListRecord } from "./expense-list-record";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { NumberDisplay } from "@/components/ui/number-display";
+import { Separator } from "@/components/ui/separator";
 
 export const ExpensesList = () => {
     const searchQuery = useSearchFiltersStore((s) => s.searchQuery);
@@ -74,6 +75,7 @@ export const ExpensesList = () => {
                         <NumberDisplay amount={expensesByDay.total.toString()} animate={true} />
                     </CardHeader>
                     <CardContent>
+                        <Separator />
                         {Object.entries(expensesByDay.expenses).map(([day, expenses], index) => (
                             <div key={index} className={cn(
                                 "p-4",

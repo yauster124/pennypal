@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { CurrencyInput } from "@/components/ui/currency-input";
 import { DatePicker } from "@/components/ui/date-picker";
 import { CategoryCombobox } from "@/features/categories/components/category-combobox";
 import { Combobox } from "@/components/ui/combobox";
@@ -15,6 +14,7 @@ import { DeleteExpense } from "../delete-expense";
 import { Button } from "@/components/ui/button";
 import { DialogClose } from "@/components/ui/dialog";
 import { Loader2Icon } from "lucide-react";
+import { InputBase, InputBaseAdornment, InputBaseControl, InputBaseInput } from "@/components/ui/input-base";
 
 export const UpdateExpenseForm = ({
     expense,
@@ -86,18 +86,25 @@ export const UpdateExpenseForm = ({
                         )}
                     />
                     <FormField
-                        control={form.control}
-                        name="amount"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Amount</FormLabel>
-                                <FormControl>
-                                    <CurrencyInput {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                    control={form.control}
+                    name="amount"
+                    render={({ field, fieldState }) => (
+                        <FormItem>
+                            <FormLabel>Amount</FormLabel>
+                            <InputBase error={Boolean(fieldState.error)}>
+                                <InputBaseAdornment>
+                                    £
+                                </InputBaseAdornment>
+                                <InputBaseControl>
+                                    <FormControl>
+                                        <InputBaseInput {...field} />
+                                    </FormControl>
+                                </InputBaseControl>
+                            </InputBase>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
                     <FormField
                         control={form.control}
                         name="date"
