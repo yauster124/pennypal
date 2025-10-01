@@ -27,7 +27,7 @@ export const NumberDisplay = ({
             "flex items-end"
         )}>
             <span className={cn(
-                "translate-y-[-1px] mr-[1px]",
+                "translate-y-[-0.6px] mr-[1px]",
                 variant === "large" && "text-xl"
             )}>
                 {format && Number(amount) > 0 ? "+" : ""}
@@ -40,7 +40,7 @@ export const NumberDisplay = ({
                         format={false}
                         dynamicColour={false}
                         className={cn(
-                            "translate-y-[3px]",
+                            "translate-y-[5px]",
                             variant === "small" && "text-3xl",
                             variant === "large" && "text-5xl"
                         )}
@@ -52,6 +52,7 @@ export const NumberDisplay = ({
                         dynamicColour={false}
                         padZero={true}
                         className={cn(
+                            "translate-y-[1px]",
                             variant === "small" && "text-xl",
                             variant === "large" && "text-3xl"
                         )}

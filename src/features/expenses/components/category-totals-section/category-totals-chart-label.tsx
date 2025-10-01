@@ -20,8 +20,8 @@ export const CategoryTotalsChartLabel = ({
             dominantBaseline="middle"
         >
             <tspan className="text-xl fill-foreground">£</tspan>
-            <tspan dy="-0.1em" dx="0.1em" className="text-3xl fill-foreground">{formattedPounds}</tspan>
-            <tspan dy="0.15em" className="text-xl fill-foreground">.{pence}</tspan>
+            <tspan dy="-0.1em" dx="0.1em" className="font-bold text-3xl fill-foreground">{formattedPounds}</tspan>
+            <tspan dy="0.15em" className="font-bold text-xl fill-foreground">.{pence}</tspan>
         </text>
     )
 }

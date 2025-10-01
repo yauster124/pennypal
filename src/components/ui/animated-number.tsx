@@ -40,7 +40,7 @@ export default function AnimatedNumber({
             format={formatterOptions}
             spinTiming={{ duration: 1000 }}
             className={cn(
-                "text-2xl",
+                "text-2xl font-bold",
                 value < 0 && dynamicColour && "text-destructive",
                 value > 0 && dynamicColour && "text-constructive",
                 className
