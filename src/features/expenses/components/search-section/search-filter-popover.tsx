@@ -7,6 +7,8 @@ import { useSearchFiltersStore } from "../../store/search-filters-store"
 import { useGetCategories } from "@/features/categories/api/get-categories"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
+import { toUTCDateAtMidnight } from "@/lib/utils";
 
 export const SearchFilterPopover = ({
     trigger
@@ -30,34 +32,27 @@ export const SearchFilterPopover = ({
             <PopoverContent className="w-80">
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
-                        <Label htmlFor="start-date">Start date</Label>
+                        <Label htmlFor="end-date">Date Range</Label>
                         <div>
-                            <DatePicker
-                                id="start-date"
-                                value={startDate}
-                                onChange={setStartDate}
-                                className="w-[180px]"
+                            <DateRangePicker
+                                value={{
+                                    from: startDate || new Date(),
+                                    to: endDate
+                                }}
+                                onChange={(range) => {
+                                    setStartDate(range.range.from);
+                                    setEndDate(range.range.to);
+                                }}
+                                align="start"
+                                locale="en-GB"
+                                showCompare={false}
                             />
                             <Button
                                 variant="link"
-                                onClick={() => setStartDate(undefined)}
-                            >
-                                Clear
-                            </Button>
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="end-date">End date</Label>
-                        <div>
-                            <DatePicker
-                                id="end-date"
-                                value={endDate}
-                                onChange={setEndDate}
-                                className="w-[180px]"
-                            />
-                            <Button
-                                variant="link"
-                                onClick={() => setEndDate(undefined)}
+                                onClick={() => {
+                                    setStartDate(undefined);
+                                    setEndDate(undefined);
+                                }}
                             >
                                 Clear
                             </Button>
