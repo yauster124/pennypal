@@ -3,6 +3,7 @@ import { ReactNode } from "react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import * as React from "react"
 import { ThemeProvider as NextThemesProvider } from "next-themes"
+import { BProgressProvider } from "@/components/bprogress-provider"
 
 function ThemeProvider({
   children,
@@ -21,7 +22,9 @@ export function Providers({ children }: { children: ReactNode }) {
     disableTransitionOnChange
   >
     <QueryClientProvider client={queryClient}>
-      {children}
+      <BProgressProvider>
+        {children}
+      </BProgressProvider>
     </QueryClientProvider>
   </ThemeProvider>
 }
