@@ -117,35 +117,48 @@ export const getCategoryIcon = ({
     }
 }
 
-const getCategoryColour = ({
-    categoryId
-}: {
-    categoryId: string
-}) => {
+export const getCategoryColour = (categoryId: string, prefix?: string) => {
+    let className = "";
     switch (categoryId.toString()) {
         case "1":
-            return "bg-[#F97316]";
+            className = "bg-[#F97316]";
+            break;
         case "2":
-            return "bg-[#EC4899]";
+            className = "bg-[#EC4899]";
+            break;
         case "3":
-            return "bg-[#6366F1]";
+            className = "bg-[#6366F1]";
+            break;
         case "4":
-            return "bg-[#0EA5E9]";
+            className = "bg-[#0EA5E9]";
+            break;
         case "5":
-            return "bg-[#3B82F6]";
+            className = "bg-[#3B82F6]";
+            break;
         case "6":
-            return "bg-[#EAB308]";
+            className = "bg-[#EAB308]";
+            break;
         case "7":
-            return "bg-[#A855F7]";
+            className = "bg-[#A855F7]";
+            break;
         case "8":
-            return "bg-[#22C55E]";
+            className = "bg-[#22C55E]";
+            break;
         case "51":
-            return "bg-[#DC2626]";
+            className = "bg-[#DC2626]";
+            break;
         case "52":
-            return "bg-[#6B7280]";
+            className = "bg-[#6B7280]";
+            break;
         default:
-            return "bg-primary";
+            className = "";
     }
+
+    if (prefix) {
+        return `${prefix}${className}`;
+    }
+
+    return className;
 }
 
 export const CategoryIcon = ({
@@ -158,7 +171,7 @@ export const CategoryIcon = ({
     return (
         <div className={cn(
             "w-10 h-10 flex items-center justify-center rounded-full text-primary-foreground",
-            getCategoryColour({ categoryId })
+            getCategoryColour(categoryId)
             )}
         >
             {getCategoryIcon({ categoryName: category.name })}

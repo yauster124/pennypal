@@ -34,7 +34,7 @@ export const CategoryTotalsSection = () => {
     return (
         <Card className="@container/card flex-1">
             <CardHeader>
-                <CardTitle>Expenses Structure</CardTitle>
+                <CardTitle>Expense Structure</CardTitle>
                 <CardDescription>
                     <span className="hidden @[540px]/card:block">
                         {timeRange === "1m" && "Totals per category over the last month"}

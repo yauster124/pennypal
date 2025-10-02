@@ -39,11 +39,15 @@ export const CategoryBudgetsSection = ({
                         <h4>No budgets found.</h4>
                     </div>
                 )}
-                {budgets.length > 0 && budgets.map((budget) => (
-                    <div className="flex flex-col gap-4">
-                        <CategoryBudgetRecord budget={budget} />
+                {budgets.length > 0 && (
+                    <div className="flex flex-col gap-6">
+                        {budgets.map((budget, index) => (
+                            <div key={index} className="flex flex-col gap-4">
+                                <CategoryBudgetRecord budget={budget} />
+                            </div>
+                        ))}
                     </div>
-                ))}
+                )}
             </CardContent>
         </Card>
     )
